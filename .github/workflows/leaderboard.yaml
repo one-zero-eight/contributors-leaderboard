@@ -1,0 +1,48 @@
+name: Generate leaderboard
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  leaderboard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate leaderboard.svg
+        env:
+          # Optional: create org secret GH_PAT if you need access beyond the current repo scope
+          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          ORG: one-zero-eight
+          MONTHS: "6"
+          OVERALL_TOP_N: "50"
+          PER_REPO_TOP_N: "10"
+          PER_REPO_ENRICH_TOP_REPOS: "10"
+        run: node .github/scripts/generate_leaderboard.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add leaderboard.svg
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git commit -m "chore: update leaderboard"
+          git push
