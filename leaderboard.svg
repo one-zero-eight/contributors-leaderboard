@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="4514" viewBox="0 0 1100 4514">
-  <rect x="0" y="0" width="1100" height="4514" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="4460" viewBox="0 0 1100 4460">
+  <rect x="0" y="0" width="1100" height="4460" fill="white"/>
   <style>
     text {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -9,199 +9,199 @@
       white-space: pre;
     }
   </style>
-<text x="20" y="34">one-zero-eight leaderboard last 6 months 2025-08-10..2026-02-09</text>
+<text x="20" y="34">one-zero-eight leaderboard last 6 months 2025-08-17..2026-02-16</text>
 <text x="20" y="52"></text>
 <text x="20" y="70">Overall top contributors</text>
 <text x="20" y="88">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="106">------------------------------------------------------------</text>
-<text x="20" y="124"> 1 ArtemSBulgakov             271     2     7     18</text>
-<text x="20" y="142"> 2 dantetemplar               157     2     2     29</text>
-<text x="20" y="160"> 3 ZolotarevAlexandr           78     2     2     21</text>
-<text x="20" y="178"> 4 danillatency                58     0     0     12</text>
-<text x="20" y="196"> 5 dofi4ka                     48     4     4     25</text>
+<text x="20" y="124"> 1 ArtemSBulgakov             300     2     9     18</text>
+<text x="20" y="142"> 2 dantetemplar               214     2     2     33</text>
+<text x="20" y="160"> 3 ZolotarevAlexandr           81     2     2     22</text>
+<text x="20" y="178"> 4 dofi4ka                     60     6     7     25</text>
+<text x="20" y="196"> 5 danillatency                59     0     0     12</text>
 <text x="20" y="214"> 6 PoweredDeveloper            44     0     0     12</text>
-<text x="20" y="232"> 7 thexayotbe                  15     1     0      2</text>
-<text x="20" y="250"> 8 evermake                    14     3     2      0</text>
-<text x="20" y="268"> 9 upconett                    13     1     1      0</text>
-<text x="20" y="286">10 projacktor                  11     1     1      0</text>
-<text x="20" y="304">11 rTexty                       9     1     1      1</text>
-<text x="20" y="322">12 poeticlama                   8     3     3      4</text>
-<text x="20" y="340">13 dependabot[bot]              5     5    84      0</text>
+<text x="20" y="232"> 7 poeticlama                  17     4     4      5</text>
+<text x="20" y="250"> 8 thexayotbe                  15     1     0      2</text>
+<text x="20" y="268"> 9 evermake                    14     3     2      0</text>
+<text x="20" y="286">10 upconett                    13     1     1      0</text>
+<text x="20" y="304">11 projacktor                  11     1     1      2</text>
+<text x="20" y="322">12 rTexty                       9     1     1      1</text>
+<text x="20" y="340">13 dependabot[bot]              5     5    89      0</text>
 <text x="20" y="358">14 cursoragent                  3     0     0      0</text>
 <text x="20" y="376">15 xKatinJn                     3     0     0      0</text>
 <text x="20" y="394">16 pe3ep                        2     1     1      0</text>
-<text x="20" y="412">17 Alyona-art                   2     2     2      0</text>
-<text x="20" y="430">18 wannebetheshy                1     0     0      0</text>
-<text x="20" y="448">19 AzaliaAlisheva               1     1     1      0</text>
-<text x="20" y="466">20 edikrvrs                     1     1     1      0</text>
-<text x="20" y="484">21 Makcal                       1     0     0      8</text>
+<text x="20" y="412">17 xiadnoring                   1     1     1      0</text>
+<text x="20" y="430">18 Alyona-art                   1     1     1      0</text>
+<text x="20" y="448">19 snyk-bot                     1     0     0      0</text>
+<text x="20" y="466">20 AzaliaAlisheva               1     1     1      0</text>
+<text x="20" y="484">21 wannebetheshy                1     0     0      0</text>
 <text x="20" y="502">22 belyakova-anna               1     0     0      0</text>
-<text x="20" y="520">23 xiadnoring                   1     1     1      0</text>
-<text x="20" y="538">24 snyk-bot                     1     0     0      0</text>
+<text x="20" y="520">23 github-actions[bot]          1     0     0      0</text>
+<text x="20" y="538">24 Makcal                       1     0     0      8</text>
 <text x="20" y="556"></text>
 <text x="20" y="574">Per repository leaderboards</text>
 <text x="20" y="592"></text>
-<text x="20" y="610">one-zero-eight/website  commits 208</text>
+<text x="20" y="610">one-zero-eight/website  commits 238</text>
 <text x="20" y="628">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="646">------------------------------------------------------------</text>
-<text x="20" y="664"> 1 ArtemSBulgakov             121     0     2      1</text>
+<text x="20" y="664"> 1 ArtemSBulgakov             137     0     2      1</text>
 <text x="20" y="682"> 2 PoweredDeveloper            41     0     0      7</text>
-<text x="20" y="700"> 3 dofi4ka                     21     2     2     10</text>
+<text x="20" y="700"> 3 dofi4ka                     30     3     4     10</text>
 <text x="20" y="718"> 4 thexayotbe                  15     1     0      2</text>
-<text x="20" y="736"> 5 dantetemplar                 4     0     0      7</text>
-<text x="20" y="754"> 6 pe3ep                        2     1     1      0</text>
-<text x="20" y="772"> 7 Alyona-art                   2     2     2      0</text>
+<text x="20" y="736"> 5 poeticlama                   7     0     0      0</text>
+<text x="20" y="754"> 6 dantetemplar                 4     0     0      7</text>
+<text x="20" y="772"> 7 pe3ep                        2     1     1      0</text>
 <text x="20" y="790"> 8 xiadnoring                   1     1     1      0</text>
-<text x="20" y="808"> 9 poeticlama                   1     0     0      0</text>
+<text x="20" y="808"> 9 Alyona-art                   1     1     1      0</text>
 <text x="20" y="826"></text>
-<text x="20" y="844">one-zero-eight/schedule-builder-backend  commits 72</text>
+<text x="20" y="844">one-zero-eight/schedule-builder-backend  commits 75</text>
 <text x="20" y="862">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="880">------------------------------------------------------------</text>
-<text x="20" y="898"> 1 dantetemplar                58     0     0      1</text>
+<text x="20" y="898"> 1 dantetemplar                61     0     0      1</text>
 <text x="20" y="916"> 2 ArtemSBulgakov              12     0     0      0</text>
-<text x="20" y="934"> 3 dependabot[bot]              1     1     1      0</text>
+<text x="20" y="934"> 3 dependabot[bot]              1     1     2      0</text>
 <text x="20" y="952"> 4 wannebetheshy                1     0     0      0</text>
 <text x="20" y="970"></text>
-<text x="20" y="988">one-zero-eight/1519  commits 58</text>
+<text x="20" y="988">one-zero-eight/room-booking  commits 70</text>
 <text x="20" y="1006">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="1024">------------------------------------------------------------</text>
-<text x="20" y="1042"> 1 ZolotarevAlexandr           21     0     0      1</text>
-<text x="20" y="1060"> 2 evermake                    13     2     2      0</text>
-<text x="20" y="1078"> 3 projacktor                  11     0     0      0</text>
-<text x="20" y="1096"> 4 poeticlama                   5     1     1      0</text>
-<text x="20" y="1114"> 5 ArtemSBulgakov               4     0     0      1</text>
-<text x="20" y="1132"> 6 dantetemplar                 3     0     0      2</text>
-<text x="20" y="1150"> 7 cursoragent                  1     0     0      0</text>
-<text x="20" y="1168"></text>
-<text x="20" y="1186">one-zero-eight/printers  commits 57</text>
-<text x="20" y="1204">rk login                  commits  pr_m  pr_o issues</text>
-<text x="20" y="1222">------------------------------------------------------------</text>
-<text x="20" y="1240"> 1 danillatency                38     0     0     12</text>
-<text x="20" y="1258"> 2 ArtemSBulgakov              10     0     0      4</text>
-<text x="20" y="1276"> 3 dantetemplar                 6     0     0      5</text>
-<text x="20" y="1294"> 4 PoweredDeveloper             3     0     0      0</text>
+<text x="20" y="1042"> 1 dantetemplar                47     0     0      4</text>
+<text x="20" y="1060"> 2 ArtemSBulgakov              17     0     0      0</text>
+<text x="20" y="1078"> 3 dofi4ka                      3     1     1      0</text>
+<text x="20" y="1096"> 4 ZolotarevAlexandr            3     0     0      0</text>
+<text x="20" y="1114"></text>
+<text x="20" y="1132">one-zero-eight/1519  commits 58</text>
+<text x="20" y="1150">rk login                  commits  pr_m  pr_o issues</text>
+<text x="20" y="1168">------------------------------------------------------------</text>
+<text x="20" y="1186"> 1 ZolotarevAlexandr           21     0     0      1</text>
+<text x="20" y="1204"> 2 evermake                    13     2     2      0</text>
+<text x="20" y="1222"> 3 projacktor                  11     0     0      0</text>
+<text x="20" y="1240"> 4 poeticlama                   5     1     1      0</text>
+<text x="20" y="1258"> 5 ArtemSBulgakov               4     0     0      1</text>
+<text x="20" y="1276"> 6 dantetemplar                 3     0     0      2</text>
+<text x="20" y="1294"> 7 cursoragent                  1     0     0      0</text>
 <text x="20" y="1312"></text>
-<text x="20" y="1330">one-zero-eight/workshops  commits 45</text>
+<text x="20" y="1330">one-zero-eight/printers  commits 57</text>
 <text x="20" y="1348">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="1366">------------------------------------------------------------</text>
-<text x="20" y="1384"> 1 ZolotarevAlexandr           27     0     0     12</text>
-<text x="20" y="1402"> 2 ArtemSBulgakov              11     0     0      0</text>
-<text x="20" y="1420"> 3 dantetemplar                 7     0     0      2</text>
-<text x="20" y="1438"></text>
-<text x="20" y="1456">one-zero-eight/parsers  commits 33</text>
-<text x="20" y="1474">rk login                  commits  pr_m  pr_o issues</text>
-<text x="20" y="1492">------------------------------------------------------------</text>
-<text x="20" y="1510"> 1 dantetemplar                21     0     0      0</text>
-<text x="20" y="1528"> 2 ZolotarevAlexandr            8     2     2      0</text>
-<text x="20" y="1546"> 3 ArtemSBulgakov               3     0     0      0</text>
-<text x="20" y="1564"> 4 AzaliaAlisheva               1     1     1      0</text>
+<text x="20" y="1384"> 1 danillatency                38     0     0     12</text>
+<text x="20" y="1402"> 2 ArtemSBulgakov              10     0     0      4</text>
+<text x="20" y="1420"> 3 dantetemplar                 6     0     0      5</text>
+<text x="20" y="1438"> 4 PoweredDeveloper             3     0     0      0</text>
+<text x="20" y="1456"></text>
+<text x="20" y="1474">one-zero-eight/workshops  commits 45</text>
+<text x="20" y="1492">rk login                  commits  pr_m  pr_o issues</text>
+<text x="20" y="1510">------------------------------------------------------------</text>
+<text x="20" y="1528"> 1 ZolotarevAlexandr           30     0     0     12</text>
+<text x="20" y="1546"> 2 ArtemSBulgakov              11     0     0      0</text>
+<text x="20" y="1564"> 3 dantetemplar                 4     0     0      2</text>
 <text x="20" y="1582"></text>
-<text x="20" y="1600">one-zero-eight/maps  commits 33</text>
+<text x="20" y="1600">one-zero-eight/maps  commits 34</text>
 <text x="20" y="1618">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="1636">------------------------------------------------------------</text>
-<text x="20" y="1654"> 1 danillatency                20     0     0      0</text>
+<text x="20" y="1654"> 1 danillatency                21     0     0      0</text>
 <text x="20" y="1672"> 2 ArtemSBulgakov               9     0     0      0</text>
 <text x="20" y="1690"> 3 ZolotarevAlexandr            3     0     0      1</text>
 <text x="20" y="1708"> 4 rTexty                       1     1     1      0</text>
 <text x="20" y="1726"></text>
-<text x="20" y="1744">one-zero-eight/guard  commits 33</text>
+<text x="20" y="1744">one-zero-eight/parsers  commits 33</text>
 <text x="20" y="1762">rk login                  commits  pr_m  pr_o issues</text>
 <text x="20" y="1780">------------------------------------------------------------</text>
-<text x="20" y="1798"> 1 dofi4ka                     27     0     0     15</text>
-<text x="20" y="1816"> 2 dantetemplar                 4     0     0      0</text>
-<text x="20" y="1834"> 3 ArtemSBulgakov               2     0     0      0</text>
-<text x="20" y="1852"></text>
-<text x="20" y="1870">one-zero-eight/accounts  commits 23</text>
-<text x="20" y="1888">rk login                  commits  pr_m  pr_o issues</text>
-<text x="20" y="1906">------------------------------------------------------------</text>
-<text x="20" y="1924"> 1 dantetemplar                20     0     0      1</text>
-<text x="20" y="1942"> 2 ArtemSBulgakov               2     0     0      0</text>
-<text x="20" y="1960"> 3 dependabot[bot]              1     1    12      0</text>
-<text x="20" y="1978"></text>
-<text x="20" y="1996">one-zero-eight/sport  commits 22</text>
-<text x="20" y="2014">rk login                  commits  pr_m  pr_o issues</text>
-<text x="20" y="2032">------------------------------------------------------------</text>
-<text x="20" y="2050"> 1 ArtemSBulgakov              21     1     1      4</text>
-<text x="20" y="2068"> 2 edikrvrs                     1     1     1      0</text>
-<text x="20" y="2086"></text>
-<text x="20" y="2104">one-zero-eight/events  commits 20</text>
-<text x="20" y="2122">rk login                  commits</text>
-<text x="20" y="2140">--------------------------------------</text>
-<text x="20" y="2158"> 1 dantetemplar                14</text>
-<text x="20" y="2176"> 2 ArtemSBulgakov               5</text>
-<text x="20" y="2194"> 3 ZolotarevAlexandr            1</text>
-<text x="20" y="2212"></text>
-<text x="20" y="2230">one-zero-eight/schedule-builder-frontend  commits 13</text>
-<text x="20" y="2248">rk login                  commits</text>
-<text x="20" y="2266">--------------------------------------</text>
-<text x="20" y="2284"> 1 dantetemplar                 7</text>
-<text x="20" y="2302"> 2 ArtemSBulgakov               4</text>
-<text x="20" y="2320"> 3 cursoragent                  2</text>
+<text x="20" y="1798"> 1 dantetemplar                21     0     0      0</text>
+<text x="20" y="1816"> 2 ZolotarevAlexandr            8     2     2      1</text>
+<text x="20" y="1834"> 3 ArtemSBulgakov               3     0     0      0</text>
+<text x="20" y="1852"> 4 AzaliaAlisheva               1     1     1      0</text>
+<text x="20" y="1870"></text>
+<text x="20" y="1888">one-zero-eight/guard  commits 33</text>
+<text x="20" y="1906">rk login                  commits  pr_m  pr_o issues</text>
+<text x="20" y="1924">------------------------------------------------------------</text>
+<text x="20" y="1942"> 1 dofi4ka                     27     0     0     15</text>
+<text x="20" y="1960"> 2 dantetemplar                 4     0     0      0</text>
+<text x="20" y="1978"> 3 ArtemSBulgakov               2     0     0      0</text>
+<text x="20" y="1996"></text>
+<text x="20" y="2014">one-zero-eight/events  commits 29</text>
+<text x="20" y="2032">rk login                  commits  pr_m  pr_o issues</text>
+<text x="20" y="2050">------------------------------------------------------------</text>
+<text x="20" y="2068"> 1 dantetemplar                21     0     0      1</text>
+<text x="20" y="2086"> 2 ArtemSBulgakov               7     0     0      0</text>
+<text x="20" y="2104"> 3 ZolotarevAlexandr            1     0     0      1</text>
+<text x="20" y="2122"></text>
+<text x="20" y="2140">one-zero-eight/accounts  commits 27</text>
+<text x="20" y="2158">rk login                  commits</text>
+<text x="20" y="2176">--------------------------------------</text>
+<text x="20" y="2194"> 1 dantetemplar                21</text>
+<text x="20" y="2212"> 2 ArtemSBulgakov               5</text>
+<text x="20" y="2230"> 3 dependabot[bot]              1</text>
+<text x="20" y="2248"></text>
+<text x="20" y="2266">one-zero-eight/sport  commits 21</text>
+<text x="20" y="2284">rk login                  commits</text>
+<text x="20" y="2302">--------------------------------------</text>
+<text x="20" y="2320"> 1 ArtemSBulgakov              21</text>
 <text x="20" y="2338"></text>
-<text x="20" y="2356">one-zero-eight/music-room  commits 13</text>
+<text x="20" y="2356">one-zero-eight/schedule-builder-frontend  commits 15</text>
 <text x="20" y="2374">rk login                  commits</text>
 <text x="20" y="2392">--------------------------------------</text>
-<text x="20" y="2410"> 1 ArtemSBulgakov               8</text>
-<text x="20" y="2428"> 2 ZolotarevAlexandr            4</text>
-<text x="20" y="2446"> 3 dantetemplar                 1</text>
+<text x="20" y="2410"> 1 dantetemplar                 9</text>
+<text x="20" y="2428"> 2 ArtemSBulgakov               4</text>
+<text x="20" y="2446"> 3 cursoragent                  2</text>
 <text x="20" y="2464"></text>
-<text x="20" y="2482">one-zero-eight/.github  commits 12</text>
+<text x="20" y="2482">one-zero-eight/music-room  commits 13</text>
 <text x="20" y="2500">rk login                  commits</text>
 <text x="20" y="2518">--------------------------------------</text>
-<text x="20" y="2536"> 1 ArtemSBulgakov               7</text>
-<text x="20" y="2554"> 2 dantetemplar                 5</text>
-<text x="20" y="2572"></text>
-<text x="20" y="2590">one-zero-eight/aiogram-template  commits 11</text>
-<text x="20" y="2608">rk login                  commits</text>
-<text x="20" y="2626">--------------------------------------</text>
-<text x="20" y="2644"> 1 upconett                    11</text>
-<text x="20" y="2662"></text>
-<text x="20" y="2680">one-zero-eight/club-fest-bot  commits 11</text>
-<text x="20" y="2698">rk login                  commits</text>
-<text x="20" y="2716">--------------------------------------</text>
-<text x="20" y="2734"> 1 ZolotarevAlexandr           11</text>
-<text x="20" y="2752"></text>
-<text x="20" y="2770">one-zero-eight/room-booking  commits 9</text>
-<text x="20" y="2788">rk login                  commits</text>
-<text x="20" y="2806">--------------------------------------</text>
-<text x="20" y="2824"> 1 ArtemSBulgakov               6</text>
-<text x="20" y="2842"> 2 ZolotarevAlexandr            3</text>
-<text x="20" y="2860"></text>
-<text x="20" y="2878">one-zero-eight/chat-helper  commits 9</text>
-<text x="20" y="2896">rk login                  commits</text>
-<text x="20" y="2914">--------------------------------------</text>
-<text x="20" y="2932"> 1 ArtemSBulgakov               7</text>
-<text x="20" y="2950"> 2 dantetemplar                 2</text>
-<text x="20" y="2968"></text>
-<text x="20" y="2986">one-zero-eight/search  commits 8</text>
-<text x="20" y="3004">rk login                  commits</text>
-<text x="20" y="3022">--------------------------------------</text>
-<text x="20" y="3040"> 1 ArtemSBulgakov               7</text>
-<text x="20" y="3058"> 2 belyakova-anna               1</text>
-<text x="20" y="3076"></text>
-<text x="20" y="3094">one-zero-eight/sport-bot  commits 8</text>
-<text x="20" y="3112">rk login                  commits</text>
-<text x="20" y="3130">--------------------------------------</text>
-<text x="20" y="3148"> 1 ArtemSBulgakov               6</text>
-<text x="20" y="3166"> 2 snyk-bot                     1</text>
-<text x="20" y="3184"> 3 evermake                     1</text>
-<text x="20" y="3202"></text>
-<text x="20" y="3220">one-zero-eight/clubs  commits 8</text>
-<text x="20" y="3238">rk login                  commits</text>
-<text x="20" y="3256">--------------------------------------</text>
-<text x="20" y="3274"> 1 ArtemSBulgakov               8</text>
-<text x="20" y="3292"></text>
-<text x="20" y="3310">one-zero-eight/broadcast  commits 8</text>
-<text x="20" y="3328">rk login                  commits</text>
-<text x="20" y="3346">--------------------------------------</text>
-<text x="20" y="3364"> 1 rTexty                       8</text>
-<text x="20" y="3382"></text>
-<text x="20" y="3400">one-zero-eight/academic-tutorship-bot  commits 6</text>
-<text x="20" y="3418">rk login                  commits</text>
-<text x="20" y="3436">--------------------------------------</text>
-<text x="20" y="3454"> 1 dependabot[bot]              3</text>
-<text x="20" y="3472"> 2 upconett                     2</text>
-<text x="20" y="3490"> 3 Makcal                       1</text>
+<text x="20" y="2536"> 1 ArtemSBulgakov               8</text>
+<text x="20" y="2554"> 2 ZolotarevAlexandr            4</text>
+<text x="20" y="2572"> 3 dantetemplar                 1</text>
+<text x="20" y="2590"></text>
+<text x="20" y="2608">one-zero-eight/.github  commits 12</text>
+<text x="20" y="2626">rk login                  commits</text>
+<text x="20" y="2644">--------------------------------------</text>
+<text x="20" y="2662"> 1 ArtemSBulgakov               7</text>
+<text x="20" y="2680"> 2 dantetemplar                 5</text>
+<text x="20" y="2698"></text>
+<text x="20" y="2716">one-zero-eight/aiogram-template  commits 11</text>
+<text x="20" y="2734">rk login                  commits</text>
+<text x="20" y="2752">--------------------------------------</text>
+<text x="20" y="2770"> 1 upconett                    11</text>
+<text x="20" y="2788"></text>
+<text x="20" y="2806">one-zero-eight/club-fest-bot  commits 11</text>
+<text x="20" y="2824">rk login                  commits</text>
+<text x="20" y="2842">--------------------------------------</text>
+<text x="20" y="2860"> 1 ZolotarevAlexandr           11</text>
+<text x="20" y="2878"></text>
+<text x="20" y="2896">one-zero-eight/chat-helper  commits 9</text>
+<text x="20" y="2914">rk login                  commits</text>
+<text x="20" y="2932">--------------------------------------</text>
+<text x="20" y="2950"> 1 ArtemSBulgakov               7</text>
+<text x="20" y="2968"> 2 dantetemplar                 2</text>
+<text x="20" y="2986"></text>
+<text x="20" y="3004">one-zero-eight/sport-bot  commits 8</text>
+<text x="20" y="3022">rk login                  commits</text>
+<text x="20" y="3040">--------------------------------------</text>
+<text x="20" y="3058"> 1 ArtemSBulgakov               6</text>
+<text x="20" y="3076"> 2 snyk-bot                     1</text>
+<text x="20" y="3094"> 3 evermake                     1</text>
+<text x="20" y="3112"></text>
+<text x="20" y="3130">one-zero-eight/search  commits 8</text>
+<text x="20" y="3148">rk login                  commits</text>
+<text x="20" y="3166">--------------------------------------</text>
+<text x="20" y="3184"> 1 ArtemSBulgakov               7</text>
+<text x="20" y="3202"> 2 belyakova-anna               1</text>
+<text x="20" y="3220"></text>
+<text x="20" y="3238">one-zero-eight/clubs  commits 8</text>
+<text x="20" y="3256">rk login                  commits</text>
+<text x="20" y="3274">--------------------------------------</text>
+<text x="20" y="3292"> 1 ArtemSBulgakov               8</text>
+<text x="20" y="3310"></text>
+<text x="20" y="3328">one-zero-eight/broadcast  commits 8</text>
+<text x="20" y="3346">rk login                  commits</text>
+<text x="20" y="3364">--------------------------------------</text>
+<text x="20" y="3382"> 1 rTexty                       8</text>
+<text x="20" y="3400"></text>
+<text x="20" y="3418">one-zero-eight/browser-extension  commits 6</text>
+<text x="20" y="3436">rk login                  commits</text>
+<text x="20" y="3454">--------------------------------------</text>
+<text x="20" y="3472"> 1 poeticlama                   5</text>
+<text x="20" y="3490"> 2 ArtemSBulgakov               1</text>
 <text x="20" y="3508"></text>
 <text x="20" y="3526">one-zero-eight/fastapi-template  commits 6</text>
 <text x="20" y="3544">rk login                  commits</text>
@@ -210,51 +210,48 @@
 <text x="20" y="3598"> 2 dantetemplar                 2</text>
 <text x="20" y="3616"> 3 ArtemSBulgakov               1</text>
 <text x="20" y="3634"></text>
-<text x="20" y="3652">one-zero-eight/apply-bot  commits 5</text>
+<text x="20" y="3652">one-zero-eight/academic-tutorship-bot  commits 6</text>
 <text x="20" y="3670">rk login                  commits</text>
 <text x="20" y="3688">--------------------------------------</text>
-<text x="20" y="3706"> 1 ArtemSBulgakov               5</text>
-<text x="20" y="3724"></text>
-<text x="20" y="3742">one-zero-eight/fasie-2026-landing  commits 3</text>
-<text x="20" y="3760">rk login                  commits</text>
-<text x="20" y="3778">--------------------------------------</text>
-<text x="20" y="3796"> 1 ArtemSBulgakov               3</text>
-<text x="20" y="3814"></text>
-<text x="20" y="3832">one-zero-eight/browser-extension  commits 3</text>
-<text x="20" y="3850">rk login                  commits</text>
-<text x="20" y="3868">--------------------------------------</text>
-<text x="20" y="3886"> 1 poeticlama                   2</text>
-<text x="20" y="3904"> 2 ArtemSBulgakov               1</text>
-<text x="20" y="3922"></text>
-<text x="20" y="3940">one-zero-eight/rooms-bot  commits 3</text>
-<text x="20" y="3958">rk login                  commits</text>
-<text x="20" y="3976">--------------------------------------</text>
-<text x="20" y="3994"> 1 ArtemSBulgakov               3</text>
-<text x="20" y="4012"></text>
-<text x="20" y="4030">one-zero-eight/draw-108  commits 3</text>
-<text x="20" y="4048">rk login                  commits</text>
-<text x="20" y="4066">--------------------------------------</text>
-<text x="20" y="4084"> 1 ArtemSBulgakov               2</text>
-<text x="20" y="4102"> 2 dantetemplar                 1</text>
-<text x="20" y="4120"></text>
-<text x="20" y="4138">one-zero-eight/contributors-leaderboard  commits 2</text>
-<text x="20" y="4156">rk login                  commits</text>
-<text x="20" y="4174">--------------------------------------</text>
-<text x="20" y="4192"> 1 dantetemplar                 2</text>
-<text x="20" y="4210"></text>
-<text x="20" y="4228">one-zero-eight/server  commits 1</text>
-<text x="20" y="4246">rk login                  commits</text>
-<text x="20" y="4264">--------------------------------------</text>
-<text x="20" y="4282"> 1 ArtemSBulgakov               1</text>
-<text x="20" y="4300"></text>
-<text x="20" y="4318">one-zero-eight/contest  commits 1</text>
-<text x="20" y="4336">rk login                  commits</text>
-<text x="20" y="4354">--------------------------------------</text>
-<text x="20" y="4372"> 1 ArtemSBulgakov               1</text>
-<text x="20" y="4390"></text>
-<text x="20" y="4408">one-zero-eight/rooms  commits 1</text>
-<text x="20" y="4426">rk login                  commits</text>
-<text x="20" y="4444">--------------------------------------</text>
-<text x="20" y="4462"> 1 ArtemSBulgakov               1</text>
-<text x="20" y="4480"></text>
+<text x="20" y="3706"> 1 dependabot[bot]              3</text>
+<text x="20" y="3724"> 2 upconett                     2</text>
+<text x="20" y="3742"> 3 Makcal                       1</text>
+<text x="20" y="3760"></text>
+<text x="20" y="3778">one-zero-eight/apply-bot  commits 5</text>
+<text x="20" y="3796">rk login                  commits</text>
+<text x="20" y="3814">--------------------------------------</text>
+<text x="20" y="3832"> 1 ArtemSBulgakov               5</text>
+<text x="20" y="3850"></text>
+<text x="20" y="3868">one-zero-eight/fasie-2026-landing  commits 3</text>
+<text x="20" y="3886">rk login                  commits</text>
+<text x="20" y="3904">--------------------------------------</text>
+<text x="20" y="3922"> 1 ArtemSBulgakov               3</text>
+<text x="20" y="3940"></text>
+<text x="20" y="3958">one-zero-eight/contributors-leaderboard  commits 3</text>
+<text x="20" y="3976">rk login                  commits</text>
+<text x="20" y="3994">--------------------------------------</text>
+<text x="20" y="4012"> 1 dantetemplar                 2</text>
+<text x="20" y="4030"> 2 github-actions[bot]          1</text>
+<text x="20" y="4048"></text>
+<text x="20" y="4066">one-zero-eight/draw-108  commits 3</text>
+<text x="20" y="4084">rk login                  commits</text>
+<text x="20" y="4102">--------------------------------------</text>
+<text x="20" y="4120"> 1 ArtemSBulgakov               2</text>
+<text x="20" y="4138"> 2 dantetemplar                 1</text>
+<text x="20" y="4156"></text>
+<text x="20" y="4174">one-zero-eight/server  commits 1</text>
+<text x="20" y="4192">rk login                  commits</text>
+<text x="20" y="4210">--------------------------------------</text>
+<text x="20" y="4228"> 1 ArtemSBulgakov               1</text>
+<text x="20" y="4246"></text>
+<text x="20" y="4264">one-zero-eight/rooms  commits 1</text>
+<text x="20" y="4282">rk login                  commits</text>
+<text x="20" y="4300">--------------------------------------</text>
+<text x="20" y="4318"> 1 ArtemSBulgakov               1</text>
+<text x="20" y="4336"></text>
+<text x="20" y="4354">one-zero-eight/contest  commits 1</text>
+<text x="20" y="4372">rk login                  commits</text>
+<text x="20" y="4390">--------------------------------------</text>
+<text x="20" y="4408"> 1 ArtemSBulgakov               1</text>
+<text x="20" y="4426"></text>
 </svg>
