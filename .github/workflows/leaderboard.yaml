@@ -21,23 +21,50 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate leaderboard.svg
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v5
+        with:
+          typst-version: 0.15.1
+
+      - name: Test data generation
+        run: node --test .github/scripts/generate_leaderboard.test.mjs
+
+      - name: Generate Typst data
         env:
-          # Optional: create org secret GH_PAT if you need access beyond the current repo scope
+          # Optional: create org secret GH_PAT for organization-wide private repo access.
           GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
-          ORG: one-zero-eight
-          MONTHS: "6"
-          OVERALL_TOP_N: "50"
-          PER_REPO_TOP_N: "10"
-          PER_REPO_ENRICH_TOP_REPOS: "10"
         run: node .github/scripts/generate_leaderboard.mjs
+
+      - name: Compile leaderboards
+        run: |
+          typst compile typst/leaderboard.typ leaderboard.svg \
+            --input view=overview \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
+          typst compile typst/leaderboard.typ leaderboard-overall.svg \
+            --input view=overall \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
+          typst compile typst/leaderboard.typ leaderboard-monorepo.svg \
+            --input view=monorepo \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
+          typst compile typst/leaderboard.typ leaderboard-website.svg \
+            --input view=website \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add leaderboard.svg
+          git add \
+            typst/generated-data.typ \
+            leaderboard.svg \
+            leaderboard-overall.svg \
+            leaderboard-monorepo.svg \
+            leaderboard-website.svg
 
           if git diff --cached --quiet; then
             echo "No changes"
