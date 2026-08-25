@@ -1,415 +1,418 @@
 import fs from "node:fs/promises";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 
-const ORG = process.env.ORG || "one-zero-eight";
-const MONTHS = Number(process.env.MONTHS || "6");
-const OVERALL_TOP_N = Number(process.env.OVERALL_TOP_N || "50");
-const PER_REPO_TOP_N = Number(process.env.PER_REPO_TOP_N || "10");
-const PER_REPO_ENRICH_TOP_REPOS = Number(process.env.PER_REPO_ENRICH_TOP_REPOS || "10");
-
-const TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
-if (!TOKEN) {
-  console.error("Missing GH_TOKEN or GITHUB_TOKEN");
-  process.exit(1);
-}
+import { leaderboardConfig } from "../../leaderboard.config.mjs";
 
 const API = "https://api.github.com";
 const GQL = "https://api.github.com/graphql";
-const HEADERS = {
-  "Accept": "application/vnd.github+json",
-  "Authorization": `Bearer ${TOKEN}`,
-  "X-GitHub-Api-Version": "2022-11-28",
-};
+const DEFAULT_OUTPUT = "typst/generated-data.typ";
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-function isoDate(d) {
-  return d.toISOString().slice(0, 10);
+function isoDate(date) {
+  return date.toISOString().slice(0, 10);
 }
 
-function monthsBackDate(months) {
-  const d = new Date();
-  // Approx six months window in days to avoid month length edge cases
-  const days = Math.round(months * 30.4375); // average days per month
-  d.setUTCDate(d.getUTCDate() - days);
-  d.setUTCHours(0, 0, 0, 0);
-  return d;
+export function monthsBackDate(now, months) {
+  const date = new Date(now);
+  const originalDay = date.getUTCDate();
+
+  date.setUTCDate(1);
+  date.setUTCMonth(date.getUTCMonth() - months);
+  const daysInTargetMonth = new Date(
+    Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  date.setUTCDate(Math.min(originalDay, daysInTargetMonth));
+  date.setUTCHours(0, 0, 0, 0);
+
+  return date;
 }
 
-function escapeXml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;");
-}
-
-function gqlStringLiteral(s) {
-  // GraphQL string literal with escapes
-  return `"${String(s).replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
-}
-
-async function ghGet(url) {
-  const res = await fetch(url, { headers: HEADERS });
-  if (res.status === 401 || res.status === 403) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`GET ${url} failed ${res.status} ${res.statusText}\n${body}`);
+export function validateConfig(config) {
+  if (!config?.organization || typeof config.organization !== "string") {
+    throw new Error("Config organization must be a non-empty string");
   }
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    throw new Error(`GET ${url} failed ${res.status} ${res.statusText}\n${body}`);
+  if (!Number.isInteger(config.months) || config.months <= 0) {
+    throw new Error("Config months must be a positive integer");
   }
-  return res.json();
-}
+  if (!Array.isArray(config.leaderboards) || config.leaderboards.length === 0) {
+    throw new Error("Config must contain at least one leaderboard");
+  }
 
-async function ghGetWith202Retry(url, attempts = 7) {
-  let delay = 2000;
-  for (let i = 0; i < attempts; i++) {
-    const res = await fetch(url, { headers: HEADERS });
-    if (res.status === 202) {
-      await sleep(delay);
-      delay = Math.min(delay * 2, 60000);
-      continue;
+  const ids = new Set();
+  let overallCount = 0;
+  for (const section of config.leaderboards) {
+    if (!section?.id || !/^[a-z][a-z0-9_]*$/.test(section.id)) {
+      throw new Error(`Invalid leaderboard id: ${section?.id ?? "missing"}`);
     }
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      throw new Error(`GET ${url} failed ${res.status} ${res.statusText}\n${body}`);
+    if (ids.has(section.id)) {
+      throw new Error(`Duplicate leaderboard id: ${section.id}`);
     }
-    return res.json();
+    if (!section.title || !section.description) {
+      throw new Error(`Leaderboard ${section.id} needs a title and description`);
+    }
+    if (!section.repository) overallCount += 1;
+    ids.add(section.id);
   }
-  // If still 202, treat as unavailable
-  return null;
+  if (overallCount !== 1) {
+    throw new Error("Config must contain exactly one organization-wide leaderboard");
+  }
 }
 
-async function gql(query) {
-  const res = await fetch(GQL, {
-    method: "POST",
-    headers: {
-      ...HEADERS,
-      "Content-Type": "application/json",
+export function shouldExcludeLogin(login, excludedAccounts = {}) {
+  const normalizedLogin = String(login).toLowerCase();
+  const blockedLogins = new Set(
+    (excludedAccounts.logins ?? []).map((value) => value.toLowerCase()),
+  );
+  if (blockedLogins.has(normalizedLogin)) return true;
+
+  return (excludedAccounts.suffixes ?? []).some((suffix) =>
+    normalizedLogin.endsWith(suffix.toLowerCase()),
+  );
+}
+
+export function rankContributors(commitMap, metricsMap = new Map()) {
+  return Array.from(commitMap.entries())
+    .filter(([, commits]) => commits > 0)
+    .map(([login, commits]) => ({
+      login,
+      commits,
+      prsMerged: metricsMap.get(login)?.prsMerged ?? 0,
+      prsOpened: metricsMap.get(login)?.prsOpened ?? 0,
+      issues: metricsMap.get(login)?.issues ?? 0,
+    }))
+    .sort(
+      (left, right) =>
+        right.commits - left.commits ||
+        left.login.localeCompare(right.login, "en", { sensitivity: "base" }),
+    );
+}
+
+function typstString(value) {
+  return JSON.stringify(String(value));
+}
+
+function sumContributors(contributors) {
+  return contributors.reduce(
+    (totals, contributor) => ({
+      commits: totals.commits + contributor.commits,
+      prsMerged: totals.prsMerged + contributor.prsMerged,
+      prsOpened: totals.prsOpened + contributor.prsOpened,
+      issues: totals.issues + contributor.issues,
+    }),
+    { commits: 0, prsMerged: 0, prsOpened: 0, issues: 0 },
+  );
+}
+
+export function serializeTypstData(data) {
+  const sections = data.leaderboards
+    .map((section) => {
+      const contributors = section.contributors
+        .map(
+          (contributor) => `      (
+        login: ${typstString(contributor.login)},
+        commits: ${contributor.commits},
+        prs_merged: ${contributor.prsMerged},
+        prs_opened: ${contributor.prsOpened},
+        issues: ${contributor.issues},
+      ),`,
+        )
+        .join("\n");
+      const totals = sumContributors(section.contributors);
+
+      return `    ${section.id}: (
+      id: ${typstString(section.id)},
+      title: ${typstString(section.title)},
+      description: ${typstString(section.description)},
+      repository: ${section.repository ? typstString(section.repository) : "none"},
+      totals: (
+        commits: ${totals.commits},
+        prs_merged: ${totals.prsMerged},
+        prs_opened: ${totals.prsOpened},
+        issues: ${totals.issues},
+      ),
+      contributors: (
+${contributors}
+      ),
+    ),`;
+    })
+    .join("\n");
+
+  return `// Generated by .github/scripts/generate_leaderboard.mjs. Do not edit.
+#let leaderboard-data = (
+  organization: ${typstString(data.organization)},
+  months: ${data.months},
+  from: ${typstString(data.from)},
+  to: ${typstString(data.to)},
+  generated_at: ${typstString(data.generatedAt)},
+  leaderboards: (
+${sections}
+  ),
+)
+`;
+}
+
+function gqlStringLiteral(value) {
+  return JSON.stringify(String(value));
+}
+
+function createGitHubClient(token) {
+  const headers = {
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${token}`,
+    "X-GitHub-Api-Version": "2022-11-28",
+  };
+
+  async function get(url) {
+    const response = await fetch(url, { headers });
+    if (!response.ok) {
+      const body = await response.text().catch(() => "");
+      throw new Error(
+        `GET ${url} failed ${response.status} ${response.statusText}\n${body}`,
+      );
+    }
+    return response.json();
+  }
+
+  async function getContributorStats(url, attempts = 7) {
+    let delay = 2_000;
+    for (let attempt = 0; attempt < attempts; attempt += 1) {
+      const response = await fetch(url, { headers });
+      if (response.status === 202) {
+        await sleep(delay);
+        delay = Math.min(delay * 2, 60_000);
+        continue;
+      }
+      if (!response.ok) {
+        const body = await response.text().catch(() => "");
+        throw new Error(
+          `GET ${url} failed ${response.status} ${response.statusText}\n${body}`,
+        );
+      }
+      return response.json();
+    }
+    return null;
+  }
+
+  async function graphql(query) {
+    const response = await fetch(GQL, {
+      method: "POST",
+      headers: { ...headers, "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    const json = await response.json().catch(() => ({}));
+    if (!response.ok || json.errors) {
+      throw new Error(`GraphQL failed: ${JSON.stringify(json.errors ?? json)}`);
+    }
+    return json.data;
+  }
+
+  return { get, getContributorStats, graphql };
+}
+
+async function mapLimit(items, limit, callback) {
+  let currentIndex = 0;
+  const output = new Array(items.length);
+  const workers = Array.from(
+    { length: Math.min(limit, items.length) },
+    async () => {
+      while (currentIndex < items.length) {
+        const index = currentIndex;
+        currentIndex += 1;
+        output[index] = await callback(items[index], index);
+      }
     },
-    body: JSON.stringify({ query }),
-  });
-
-  const json = await res.json().catch(() => ({}));
-  if (!res.ok || json.errors) {
-    throw new Error(`GraphQL failed: ${JSON.stringify(json.errors || json)}`);
-  }
-  return json.data;
+  );
+  await Promise.all(workers);
+  return output;
 }
 
-async function listOrgRepos(org) {
-  const repos = [];
+async function listOrganizationRepositories(client, organization) {
+  const repositories = [];
   let page = 1;
   while (true) {
-    const url = `${API}/orgs/${encodeURIComponent(org)}/repos?per_page=100&page=${page}&sort=pushed&direction=desc&type=all`;
-    const batch = await ghGet(url);
+    const url = `${API}/orgs/${encodeURIComponent(organization)}/repos?per_page=100&page=${page}&sort=pushed&direction=desc&type=all`;
+    const batch = await client.get(url);
     if (!Array.isArray(batch) || batch.length === 0) break;
-    for (const r of batch) {
-      if (r.archived) continue;
-      repos.push({
-        name: r.name,
-        full_name: r.full_name,
-        private: r.private,
-        fork: r.fork,
-      });
+
+    for (const repository of batch) {
+      if (!repository.archived) repositories.push(repository.name);
     }
     if (batch.length < 100) break;
     page += 1;
   }
-  return repos;
+  return repositories;
 }
 
-function sumCommitsInWindowFromStats(stats, sinceEpochSec) {
-  // stats: /stats/contributors element
-  // weeks[]: { w: epochSec, c: commits }
-  if (!stats?.weeks) return 0;
-  let sum = 0;
-  for (const w of stats.weeks) {
-    if (typeof w?.w !== "number") continue;
-    if (w.w >= sinceEpochSec) sum += (w.c || 0);
-  }
-  return sum;
+function commitsInWindow(weeks, sinceEpochSeconds) {
+  return (weeks ?? []).reduce(
+    (total, week) =>
+      typeof week?.w === "number" && week.w >= sinceEpochSeconds
+        ? total + (week.c ?? 0)
+        : total,
+    0,
+  );
 }
 
-function mapLimit(items, limit, fn) {
-  let idx = 0;
-  const out = new Array(items.length);
-  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
-    while (idx < items.length) {
-      const my = idx++;
-      out[my] = await fn(items[my], my);
-    }
-  });
-  return Promise.all(workers).then(() => out);
-}
+async function fetchRepositoryCommits(
+  client,
+  organization,
+  repository,
+  sinceEpochSeconds,
+  excludedAccounts,
+) {
+  const url = `${API}/repos/${encodeURIComponent(organization)}/${encodeURIComponent(repository)}/stats/contributors`;
+  const stats = await client.getContributorStats(url);
+  const commits = new Map();
 
-async function fetchRepoCommitStats(org, repo, sinceEpochSec) {
-  const url = `${API}/repos/${encodeURIComponent(org)}/${encodeURIComponent(repo)}/stats/contributors`;
-  const data = await ghGetWith202Retry(url);
-  if (!data) return { perLogin: new Map(), total: 0 };
-
-  const perLogin = new Map();
-  let total = 0;
-
-  for (const entry of data) {
+  for (const entry of stats ?? []) {
     const login = entry?.author?.login;
-    if (!login) continue;
-    const c = sumCommitsInWindowFromStats(entry, sinceEpochSec);
-    if (c <= 0) continue;
-    perLogin.set(login, c);
-    total += c;
+    if (!login || shouldExcludeLogin(login, excludedAccounts)) continue;
+    const count = commitsInWindow(entry.weeks, sinceEpochSeconds);
+    if (count > 0) commits.set(login, count);
   }
-  return { perLogin, total };
+  return commits;
 }
 
-async function fetchSearchCountsOrg(org, login, fromISO, toISO) {
-  const qIssues = `org:${org} is:issue author:${login} created:${fromISO}..${toISO}`;
-  const qPrsOpened = `org:${org} is:pr author:${login} created:${fromISO}..${toISO}`;
-  const qPrsMerged = `org:${org} is:pr author:${login} merged:${fromISO}..${toISO}`;
+function addCommits(target, source) {
+  for (const [login, commits] of source.entries()) {
+    target.set(login, (target.get(login) ?? 0) + commits);
+  }
+}
 
+async function fetchContributionMetrics(
+  client,
+  organization,
+  login,
+  from,
+  to,
+  repository,
+) {
+  const scope = repository
+    ? `repo:${organization}/${repository}`
+    : `org:${organization}`;
+  const issues = `${scope} is:issue author:${login} created:${from}..${to}`;
+  const prsOpened = `${scope} is:pr author:${login} created:${from}..${to}`;
+  const prsMerged = `${scope} is:pr author:${login} merged:${from}..${to}`;
   const query = `
     query {
-      issues: search(query: ${gqlStringLiteral(qIssues)}, type: ISSUE, first: 1) { issueCount }
-      prsOpened: search(query: ${gqlStringLiteral(qPrsOpened)}, type: ISSUE, first: 1) { issueCount }
-      prsMerged: search(query: ${gqlStringLiteral(qPrsMerged)}, type: ISSUE, first: 1) { issueCount }
+      issues: search(query: ${gqlStringLiteral(issues)}, type: ISSUE, first: 1) { issueCount }
+      prsOpened: search(query: ${gqlStringLiteral(prsOpened)}, type: ISSUE, first: 1) { issueCount }
+      prsMerged: search(query: ${gqlStringLiteral(prsMerged)}, type: ISSUE, first: 1) { issueCount }
     }
   `;
-  const data = await gql(query);
+  const result = await client.graphql(query);
   return {
-    issues: data.issues.issueCount || 0,
-    prsOpened: data.prsOpened.issueCount || 0,
-    prsMerged: data.prsMerged.issueCount || 0,
+    issues: result.issues.issueCount ?? 0,
+    prsOpened: result.prsOpened.issueCount ?? 0,
+    prsMerged: result.prsMerged.issueCount ?? 0,
   };
 }
 
-async function fetchSearchCountsRepo(owner, repo, login, fromISO, toISO) {
-  const qIssues = `repo:${owner}/${repo} is:issue author:${login} created:${fromISO}..${toISO}`;
-  const qPrsOpened = `repo:${owner}/${repo} is:pr author:${login} created:${fromISO}..${toISO}`;
-  const qPrsMerged = `repo:${owner}/${repo} is:pr author:${login} merged:${fromISO}..${toISO}`;
-
-  const query = `
-    query {
-      issues: search(query: ${gqlStringLiteral(qIssues)}, type: ISSUE, first: 1) { issueCount }
-      prsOpened: search(query: ${gqlStringLiteral(qPrsOpened)}, type: ISSUE, first: 1) { issueCount }
-      prsMerged: search(query: ${gqlStringLiteral(qPrsMerged)}, type: ISSUE, first: 1) { issueCount }
-    }
-  `;
-  const data = await gql(query);
-  return {
-    issues: data.issues.issueCount || 0,
-    prsOpened: data.prsOpened.issueCount || 0,
-    prsMerged: data.prsMerged.issueCount || 0,
-  };
-}
-
-function toSortedArrayFromMap(map) {
-  return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
-}
-
-function formatLine(cols) {
-  // cols: [ {text, width, align} ]
-  return cols
-    .map(({ text, width, align }) => {
-      const s = String(text ?? "");
-      if (width == null) return s;
-      if (align === "right") return s.padStart(width, " ");
-      return s.padEnd(width, " ");
-    })
-    .join(" ");
-}
-
-function buildSvg(lines, opts = {}) {
-  const fontSize = opts.fontSize ?? 14;
-  const lineHeight = opts.lineHeight ?? 18;
-  const margin = opts.margin ?? 20;
-  const width = opts.width ?? 1100;
-
-  const height = margin * 2 + lines.length * lineHeight + 10;
-
-  const y0 = margin + fontSize;
-
-  const textEls = lines.map((line, i) => {
-    const y = y0 + i * lineHeight;
-    return `<text x="${margin}" y="${y}">${escapeXml(line)}</text>`;
-  }).join("\n");
-
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect x="0" y="0" width="${width}" height="${height}" fill="white"/>
-  <style>
-    text {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: ${fontSize}px;
-      fill: #111;
-      white-space: pre;
-    }
-  </style>
-${textEls}
-</svg>`;
-}
-
-async function main() {
-  const now = new Date();
-  const from = monthsBackDate(MONTHS);
-  const fromISO = isoDate(from);
-  const toISO = isoDate(now);
-  const sinceEpochSec = Math.floor(from.getTime() / 1000);
-
-  console.log(`ORG ${ORG}`);
-  console.log(`Window ${fromISO}..${toISO}`);
-
-  const repos = await listOrgRepos(ORG);
-
-  console.log(`Repos ${repos.length}`);
-
-  const overallCommits = new Map();          // login -> commits
-  const repoCommits = new Map();             // repo -> Map(login->commits)
-  const repoTotals = new Map();              // repo -> total commits
-
-  // Limit concurrency to avoid hammering stats endpoints
-  await mapLimit(repos, 4, async (r) => {
-    const { perLogin, total } = await fetchRepoCommitStats(ORG, r.name, sinceEpochSec).catch((e) => {
-      console.warn(`Stats failed for ${r.full_name}: ${e.message}`);
-      return { perLogin: new Map(), total: 0 };
-    });
-
-    repoCommits.set(r.name, perLogin);
-    repoTotals.set(r.name, total);
-
-    for (const [login, c] of perLogin.entries()) {
-      overallCommits.set(login, (overallCommits.get(login) || 0) + c);
-    }
-  });
-
-  const overallTop = toSortedArrayFromMap(overallCommits).slice(0, OVERALL_TOP_N);
-
-  // Enrich overall top users with org-wide issues/PR counts
-  const overallMetrics = new Map(); // login -> {issues, prsOpened, prsMerged}
-  for (const [login] of overallTop) {
-    const m = await fetchSearchCountsOrg(ORG, login, fromISO, toISO).catch((e) => {
-      console.warn(`Search failed for ${login}: ${e.message}`);
+async function enrichContributors(
+  client,
+  config,
+  section,
+  commitMap,
+  from,
+  to,
+) {
+  const metrics = new Map();
+  for (const login of commitMap.keys()) {
+    const contributionMetrics = await fetchContributionMetrics(
+      client,
+      config.organization,
+      login,
+      from,
+      to,
+      section.repository,
+    ).catch((error) => {
+      console.warn(`Metrics failed for ${section.id}/${login}: ${error.message}`);
       return { issues: 0, prsOpened: 0, prsMerged: 0 };
     });
-    overallMetrics.set(login, m);
-    await sleep(150); // gentle throttle
+    metrics.set(login, contributionMetrics);
+    await sleep(120);
   }
-
-  // Per-repo: pick top repos by commit activity to enrich with PR/issue counts
-  const topRepos = Array.from(repoTotals.entries())
-    .sort((a, b) => b[1] - a[1])
-    .filter(([, total]) => total > 0)
-    .slice(0, PER_REPO_ENRICH_TOP_REPOS)
-    .map(([name]) => name);
-
-  const perRepoEnriched = new Map(); // repo -> Map(login -> metrics)
-  for (const repo of topRepos) {
-    const perLogin = repoCommits.get(repo) || new Map();
-    const topLogins = toSortedArrayFromMap(perLogin).slice(0, PER_REPO_TOP_N).map(([login]) => login);
-
-    const mMap = new Map();
-    for (const login of topLogins) {
-      const m = await fetchSearchCountsRepo(ORG, repo, login, fromISO, toISO).catch((e) => {
-        console.warn(`Repo search failed ${repo} ${login}: ${e.message}`);
-        return { issues: 0, prsOpened: 0, prsMerged: 0 };
-      });
-      mMap.set(login, m);
-      await sleep(120);
-    }
-    perRepoEnriched.set(repo, mMap);
-  }
-
-  // Build SVG text lines
-  const lines = [];
-  lines.push(`${ORG} leaderboard last ${MONTHS} months ${fromISO}..${toISO}`);
-  lines.push("");
-  lines.push("Overall top contributors");
-  lines.push(formatLine([
-    { text: "rk", width: 2, align: "right" },
-    { text: "login", width: 22 },
-    { text: "commits", width: 7, align: "right" },
-    { text: "pr_m", width: 5, align: "right" },
-    { text: "pr_o", width: 5, align: "right" },
-    { text: "issues", width: 6, align: "right" },
-  ]));
-  lines.push("-".repeat(60));
-
-  overallTop.forEach(([login, commits], idx) => {
-    const m = overallMetrics.get(login) || { issues: 0, prsOpened: 0, prsMerged: 0 };
-    lines.push(formatLine([
-      { text: String(idx + 1), width: 2, align: "right" },
-      { text: login, width: 22 },
-      { text: String(commits), width: 7, align: "right" },
-      { text: String(m.prsMerged), width: 5, align: "right" },
-      { text: String(m.prsOpened), width: 5, align: "right" },
-      { text: String(m.issues), width: 6, align: "right" },
-    ]));
-  });
-
-  lines.push("");
-  lines.push("Per repository leaderboards");
-  lines.push("");
-
-  const reposByActivity = Array.from(repoTotals.entries())
-    .sort((a, b) => b[1] - a[1])
-    .filter(([, total]) => total > 0)
-    .map(([name]) => name);
-
-  for (const repo of reposByActivity) {
-    const perLogin = repoCommits.get(repo) || new Map();
-    const top = toSortedArrayFromMap(perLogin).slice(0, PER_REPO_TOP_N);
-
-    lines.push(`${ORG}/${repo}  commits ${repoTotals.get(repo) || 0}`);
-    const enriched = perRepoEnriched.get(repo);
-
-    if (enriched) {
-      lines.push(formatLine([
-        { text: "rk", width: 2, align: "right" },
-        { text: "login", width: 22 },
-        { text: "commits", width: 7, align: "right" },
-        { text: "pr_m", width: 5, align: "right" },
-        { text: "pr_o", width: 5, align: "right" },
-        { text: "issues", width: 6, align: "right" },
-      ]));
-      lines.push("-".repeat(60));
-      top.forEach(([login, commits], idx) => {
-        const m = enriched.get(login) || { issues: 0, prsOpened: 0, prsMerged: 0 };
-        lines.push(formatLine([
-          { text: String(idx + 1), width: 2, align: "right" },
-          { text: login, width: 22 },
-          { text: String(commits), width: 7, align: "right" },
-          { text: String(m.prsMerged), width: 5, align: "right" },
-          { text: String(m.prsOpened), width: 5, align: "right" },
-          { text: String(m.issues), width: 6, align: "right" },
-        ]));
-      });
-    } else {
-      lines.push(formatLine([
-        { text: "rk", width: 2, align: "right" },
-        { text: "login", width: 22 },
-        { text: "commits", width: 7, align: "right" },
-      ]));
-      lines.push("-".repeat(38));
-      top.forEach(([login, commits], idx) => {
-        lines.push(formatLine([
-          { text: String(idx + 1), width: 2, align: "right" },
-          { text: login, width: 22 },
-          { text: String(commits), width: 7, align: "right" },
-        ]));
-      });
-    }
-
-    lines.push("");
-  }
-
-  const svg = buildSvg(lines, { width: 1100, fontSize: 14, lineHeight: 18, margin: 20 });
-  await fs.writeFile("leaderboard.svg", svg, "utf8");
-  console.log("Wrote leaderboard.svg");
+  return rankContributors(commitMap, metrics);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+export async function collectLeaderboardData(config, token, now = new Date()) {
+  validateConfig(config);
+  const client = createGitHubClient(token);
+  const fromDate = monthsBackDate(now, config.months);
+  const from = isoDate(fromDate);
+  const to = isoDate(now);
+  const sinceEpochSeconds = Math.floor(fromDate.getTime() / 1_000);
+
+  console.log(`Organization: ${config.organization}`);
+  console.log(`Window: ${from}..${to}`);
+
+  const repositoryNames = await listOrganizationRepositories(
+    client,
+    config.organization,
+  );
+  const repositoryCommits = new Map();
+  await mapLimit(repositoryNames, 4, async (repository) => {
+    const commits = await fetchRepositoryCommits(
+      client,
+      config.organization,
+      repository,
+      sinceEpochSeconds,
+      config.excludedAccounts,
+    ).catch((error) => {
+      console.warn(`Stats failed for ${repository}: ${error.message}`);
+      return new Map();
+    });
+    repositoryCommits.set(repository, commits);
+  });
+
+  const overallCommits = new Map();
+  for (const commits of repositoryCommits.values()) addCommits(overallCommits, commits);
+
+  const leaderboards = [];
+  for (const section of config.leaderboards) {
+    const commitMap = section.repository
+      ? (repositoryCommits.get(section.repository) ?? new Map())
+      : overallCommits;
+    const contributors = await enrichContributors(
+      client,
+      config,
+      section,
+      commitMap,
+      from,
+      to,
+    );
+    leaderboards.push({ ...section, contributors });
+  }
+
+  return {
+    organization: config.organization,
+    months: config.months,
+    from,
+    to,
+    generatedAt: now.toISOString(),
+    leaderboards,
+  };
+}
+
+export async function main() {
+  const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
+  if (!token) throw new Error("Missing GH_TOKEN or GITHUB_TOKEN");
+
+  const data = await collectLeaderboardData(leaderboardConfig, token);
+  const output = process.env.LEADERBOARD_DATA_OUTPUT ?? DEFAULT_OUTPUT;
+  await fs.mkdir(path.dirname(output), { recursive: true });
+  await fs.writeFile(output, serializeTypstData(data), "utf8");
+  console.log(`Wrote ${output}`);
+}
+
+const scriptPath = process.argv[1] ? pathToFileURL(process.argv[1]).href : "";
+if (import.meta.url === scriptPath) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
