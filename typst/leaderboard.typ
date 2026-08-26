@@ -9,7 +9,14 @@
 
 #let is-overview = view == "overview"
 #let is-summary = view == "summary"
-#let page-width = if is-overview { 1180pt } else { 820pt }
+#let is-profile-view = is-summary or view == "overall_month"
+#let page-width = if is-overview {
+  1180pt
+} else if is-profile-view {
+  640pt
+} else {
+  820pt
+}
 
 #set page(
   width: page-width,
