@@ -3,16 +3,16 @@
 The repository publishes website-styled SVG leaderboards for contributions to
 the [`one-zero-eight`](https://github.com/one-zero-eight) GitHub organization.
 The combined `leaderboard.svg` is accompanied by standalone Overall, Monorepo,
-and Website views.
+and Website views, a compact Overall summary, and a one-month Overall view.
 
 ## Structure
 
-- `leaderboard.config.mjs` defines the organization, rolling period, account
-  exclusions, and leaderboard sections.
+- `leaderboard.config.mjs` defines the organization, six-month and one-month
+  rolling periods, account exclusions, and leaderboard sections.
 - `.github/scripts/generate_leaderboard.mjs` collects GitHub activity and writes
   `typst/generated-data.typ`.
 - `typst/leaderboard.typ` renders the generated records using the shared website
-  colors, Rubik font, and logo asset.
+  colors and Rubik font.
 
 The generated data includes every non-automated account with at least one
 commit in the configured period. Contributors are ranked by commits, with their
@@ -38,11 +38,13 @@ typst compile typst/leaderboard.typ leaderboard.svg \
 ```
 
 Use `overall`, `monorepo`, or `website` as the `view` input for a standalone
-board. Run the generator tests with:
+six-month board. Use `summary` for the compact Overall statistics card and
+`overall_month` for the full one-month Overall board. Run the generator tests
+with:
 
 ```sh
 node --test .github/scripts/generate_leaderboard.test.mjs
 ```
 
-The workflow refreshes all four SVGs every Monday and commits changes together
+The workflow refreshes all six SVGs every Monday and commits changes together
 with the generated Typst data snapshot.

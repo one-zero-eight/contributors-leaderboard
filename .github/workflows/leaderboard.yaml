@@ -45,6 +45,14 @@ jobs:
             --input view=overall \
             --font-path typst/assets/fonts \
             --ignore-system-fonts
+          typst compile typst/leaderboard.typ leaderboard-overall-summary.svg \
+            --input view=summary \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
+          typst compile typst/leaderboard.typ leaderboard-overall-month.svg \
+            --input view=overall_month \
+            --font-path typst/assets/fonts \
+            --ignore-system-fonts
           typst compile typst/leaderboard.typ leaderboard-monorepo.svg \
             --input view=monorepo \
             --font-path typst/assets/fonts \
@@ -63,6 +71,8 @@ jobs:
             typst/generated-data.typ \
             leaderboard.svg \
             leaderboard-overall.svg \
+            leaderboard-overall-summary.svg \
+            leaderboard-overall-month.svg \
             leaderboard-monorepo.svg \
             leaderboard-website.svg
 

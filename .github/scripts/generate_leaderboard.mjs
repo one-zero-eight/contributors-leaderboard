@@ -38,6 +38,21 @@ export function validateConfig(config) {
   if (!Number.isInteger(config.months) || config.months <= 0) {
     throw new Error("Config months must be a positive integer");
   }
+  if (
+    !config.monthlyOverall ||
+    !Number.isInteger(config.monthlyOverall.months) ||
+    config.monthlyOverall.months <= 0
+  ) {
+    throw new Error("Config monthlyOverall.months must be a positive integer");
+  }
+  if (
+    !config.monthlyOverall.id ||
+    !/^[a-z][a-z0-9_]*$/.test(config.monthlyOverall.id) ||
+    !config.monthlyOverall.title ||
+    !config.monthlyOverall.description
+  ) {
+    throw new Error("Config monthlyOverall needs a valid id, title, and description");
+  }
   if (!Array.isArray(config.leaderboards) || config.leaderboards.length === 0) {
     throw new Error("Config must contain at least one leaderboard");
   }
@@ -56,6 +71,9 @@ export function validateConfig(config) {
     }
     if (!section.repository) overallCount += 1;
     ids.add(section.id);
+  }
+  if (ids.has(config.monthlyOverall.id)) {
+    throw new Error(`Duplicate leaderboard id: ${config.monthlyOverall.id}`);
   }
   if (overallCount !== 1) {
     throw new Error("Config must contain exactly one organization-wide leaderboard");
@@ -128,6 +146,9 @@ export function serializeTypstData(data) {
       title: ${typstString(section.title)},
       description: ${typstString(section.description)},
       repository: ${section.repository ? typstString(section.repository) : "none"},
+      months: ${section.months ?? data.months},
+      from: ${typstString(section.from ?? data.from)},
+      to: ${typstString(section.to ?? data.to)},
       totals: (
         commits: ${totals.commits},
         prs_merged: ${totals.prsMerged},
@@ -261,20 +282,26 @@ async function fetchRepositoryCommits(
   client,
   organization,
   repository,
-  sinceEpochSeconds,
+  sinceEpochSecondsByWindow,
   excludedAccounts,
 ) {
   const url = `${API}/repos/${encodeURIComponent(organization)}/${encodeURIComponent(repository)}/stats/contributors`;
   const stats = await client.getContributorStats(url);
-  const commits = new Map();
+  const commitsByWindow = Object.fromEntries(
+    Object.keys(sinceEpochSecondsByWindow).map((window) => [window, new Map()]),
+  );
 
   for (const entry of stats ?? []) {
     const login = entry?.author?.login;
     if (!login || shouldExcludeLogin(login, excludedAccounts)) continue;
-    const count = commitsInWindow(entry.weeks, sinceEpochSeconds);
-    if (count > 0) commits.set(login, count);
+    for (const [window, sinceEpochSeconds] of Object.entries(
+      sinceEpochSecondsByWindow,
+    )) {
+      const count = commitsInWindow(entry.weeks, sinceEpochSeconds);
+      if (count > 0) commitsByWindow[window].set(login, count);
+    }
   }
-  return commits;
+  return commitsByWindow;
 }
 
 function addCommits(target, source) {
@@ -343,9 +370,14 @@ export async function collectLeaderboardData(config, token, now = new Date()) {
   validateConfig(config);
   const client = createGitHubClient(token);
   const fromDate = monthsBackDate(now, config.months);
+  const monthlyFromDate = monthsBackDate(now, config.monthlyOverall.months);
   const from = isoDate(fromDate);
+  const monthlyFrom = isoDate(monthlyFromDate);
   const to = isoDate(now);
   const sinceEpochSeconds = Math.floor(fromDate.getTime() / 1_000);
+  const monthlySinceEpochSeconds = Math.floor(
+    monthlyFromDate.getTime() / 1_000,
+  );
 
   console.log(`Organization: ${config.organization}`);
   console.log(`Window: ${from}..${to}`);
@@ -355,22 +387,31 @@ export async function collectLeaderboardData(config, token, now = new Date()) {
     config.organization,
   );
   const repositoryCommits = new Map();
+  const monthlyRepositoryCommits = new Map();
   await mapLimit(repositoryNames, 4, async (repository) => {
-    const commits = await fetchRepositoryCommits(
+    const commitsByWindow = await fetchRepositoryCommits(
       client,
       config.organization,
       repository,
-      sinceEpochSeconds,
+      {
+        primary: sinceEpochSeconds,
+        monthly: monthlySinceEpochSeconds,
+      },
       config.excludedAccounts,
     ).catch((error) => {
       console.warn(`Stats failed for ${repository}: ${error.message}`);
-      return new Map();
+      return { primary: new Map(), monthly: new Map() };
     });
-    repositoryCommits.set(repository, commits);
+    repositoryCommits.set(repository, commitsByWindow.primary);
+    monthlyRepositoryCommits.set(repository, commitsByWindow.monthly);
   });
 
   const overallCommits = new Map();
   for (const commits of repositoryCommits.values()) addCommits(overallCommits, commits);
+  const monthlyOverallCommits = new Map();
+  for (const commits of monthlyRepositoryCommits.values()) {
+    addCommits(monthlyOverallCommits, commits);
+  }
 
   const leaderboards = [];
   for (const section of config.leaderboards) {
@@ -385,8 +426,29 @@ export async function collectLeaderboardData(config, token, now = new Date()) {
       from,
       to,
     );
-    leaderboards.push({ ...section, contributors });
+    leaderboards.push({
+      ...section,
+      months: config.months,
+      from,
+      to,
+      contributors,
+    });
   }
+
+  const monthlyContributors = await enrichContributors(
+    client,
+    config,
+    config.monthlyOverall,
+    monthlyOverallCommits,
+    monthlyFrom,
+    to,
+  );
+  leaderboards.push({
+    ...config.monthlyOverall,
+    from: monthlyFrom,
+    to,
+    contributors: monthlyContributors,
+  });
 
   return {
     organization: config.organization,
