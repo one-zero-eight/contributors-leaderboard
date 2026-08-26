@@ -2,13 +2,14 @@
 #import "generated-data.typ": leaderboard-data
 
 #let view = sys.inputs.at("view", default: "overview")
-#let valid-views = ("overview", "overall", "monorepo", "website")
+#let valid-views = ("overview", "summary", "overall", "overall_month", "monorepo", "website")
 #if not valid-views.contains(view) {
   panic("Unknown leaderboard view: " + view)
 }
 
 #let is-overview = view == "overview"
-#let page-width = if is-overview { 1180pt } else { 820pt }
+#let is-summary = view == "summary"
+#let page-width = if is-overview or is-summary { 1180pt } else { 820pt }
 
 #set page(
   width: page-width,
@@ -31,6 +32,12 @@
     #label
   ]
 ]
+
+#let period-label(months) = if months == 1 {
+  [Last month]
+} else {
+  [Last #months months]
+}
 
 #let rank-badge(rank) = {
   box(
@@ -80,7 +87,7 @@
   )
 ]
 
-#let section-card(section) = block(
+#let section-card(section, show-contributors: true) = block(
   width: 100%,
   fill: base-200,
   stroke: base-300,
@@ -97,7 +104,7 @@
         column-gutter: 10pt,
         align: bottom,
         text(size: 20pt, weight: 650)[#section.title],
-        text(size: 9.5pt, fill: muted-content)[Last #leaderboard-data.months months],
+        text(size: 9.5pt, fill: muted-content)[#period-label(section.months)],
       )
     ],
     [
@@ -122,16 +129,18 @@
     metric-label(section.totals.prs_opened, "PRS OPENED"),
     metric-label(section.totals.issues, "ISSUES OPENED"),
   )
-  #v(17pt)
-  #table-heading()
-  #for (index, contributor) in section.contributors.enumerate() {
-    contributor-row(contributor, index + 1)
-    v(2pt)
-  }
-  #if section.contributors.len() == 0 {
-    block(width: 100%, fill: base-150, radius: field-radius, inset: 18pt)[
-      #align(center)[#text(fill: muted-content)[No contributions in this period.]]
-    ]
+  #if show-contributors {
+    v(17pt)
+    table-heading()
+    for (index, contributor) in section.contributors.enumerate() {
+      contributor-row(contributor, index + 1)
+      v(2pt)
+    }
+    if section.contributors.len() == 0 {
+      block(width: 100%, fill: base-150, radius: field-radius, inset: 18pt)[
+        #align(center)[#text(fill: muted-content)[No contributions in this period.]]
+      ]
+    }
   }
 ]
 
@@ -150,6 +159,8 @@
       section-card(monorepo),
       section-card(website),
     )
+  } else if is-summary {
+    section-card(overall, show-contributors: false)
   } else {
     section-card(leaderboard-data.leaderboards.at(view))
   }

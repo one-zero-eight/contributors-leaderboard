@@ -1,6 +1,13 @@
 export const leaderboardConfig = {
   organization: "one-zero-eight",
   months: 6,
+  monthlyOverall: {
+    id: "overall_month",
+    title: "Overall contribution",
+    description:
+      "Summarized contributions across all one-zero-eight repositories.",
+    months: 1,
+  },
   excludedAccounts: {
     suffixes: ["[bot]"],
     logins: ["ci-bot", "cursoragent"],

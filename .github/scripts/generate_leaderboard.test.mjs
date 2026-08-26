@@ -12,6 +12,12 @@ import {
 const validConfig = {
   organization: "one-zero-eight",
   months: 6,
+  monthlyOverall: {
+    id: "overall_month",
+    title: "Overall",
+    description: "Last month",
+    months: 1,
+  },
   excludedAccounts: { suffixes: ["[bot]"], logins: ["ci-bot"] },
   leaderboards: [
     { id: "overall", title: "Overall", description: "All repositories" },
@@ -43,6 +49,14 @@ test("validates the maintained leaderboard config", () => {
         ),
       }),
     /exactly one organization-wide leaderboard/,
+  );
+  assert.throws(
+    () =>
+      validateConfig({
+        ...validConfig,
+        monthlyOverall: { ...validConfig.monthlyOverall, months: 0 },
+      }),
+    /monthlyOverall.months must be a positive integer/,
   );
 });
 
@@ -132,5 +146,7 @@ test("serializes safe Typst data with totals and empty sections", () => {
   assert.match(output, /commits: 3/);
   assert.match(output, /prs_merged: 2/);
   assert.match(output, /repository: none/);
+  assert.match(output, /months: 6/);
+  assert.match(output, /from: "2026-02-25"/);
   assert.match(output, /contributors: \(\n\n      \)/);
 });
