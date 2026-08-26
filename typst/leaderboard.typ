@@ -9,7 +9,7 @@
 
 #let is-overview = view == "overview"
 #let is-summary = view == "summary"
-#let page-width = if is-overview or is-summary { 1180pt } else { 820pt }
+#let page-width = if is-overview { 1180pt } else { 820pt }
 
 #set page(
   width: page-width,
