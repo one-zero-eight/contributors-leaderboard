@@ -3,8 +3,8 @@
   organization: "one-zero-eight",
   months: 6,
   from: "2026-02-28",
-  to: "2026-08-30",
-  generated_at: "2026-08-30T12:45:10.709Z",
+  to: "2026-08-31",
+  generated_at: "2026-08-31T12:08:39.665Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -13,12 +13,12 @@
       repository: none,
       months: 6,
       from: "2026-02-28",
-      to: "2026-08-30",
+      to: "2026-08-31",
       totals: (
         commits: 945,
         prs_merged: 74,
         prs_opened: 83,
-        issues: 351,
+        issues: 355,
       ),
       contributors: (
       (
@@ -47,7 +47,7 @@
         commits: 56,
         prs_merged: 7,
         prs_opened: 10,
-        issues: 139,
+        issues: 140,
       ),
       (
         login: "danillatency",
@@ -124,7 +124,7 @@
         commits: 4,
         prs_merged: 0,
         prs_opened: 1,
-        issues: 0,
+        issues: 3,
       ),
       (
         login: "rTexty",
@@ -205,7 +205,7 @@
       repository: "monorepo",
       months: 6,
       from: "2026-02-28",
-      to: "2026-08-30",
+      to: "2026-08-31",
       totals: (
         commits: 322,
         prs_merged: 35,
@@ -320,12 +320,12 @@
       repository: "website",
       months: 6,
       from: "2026-02-28",
-      to: "2026-08-30",
+      to: "2026-08-31",
       totals: (
         commits: 410,
         prs_merged: 17,
         prs_opened: 23,
-        issues: 104,
+        issues: 105,
       ),
       contributors: (
       (
@@ -368,7 +368,7 @@
         commits: 28,
         prs_merged: 3,
         prs_opened: 5,
-        issues: 80,
+        issues: 81,
       ),
       (
         login: "Aydar-art",
@@ -462,13 +462,13 @@
       description: "Summarized contributions across all one-zero-eight repositories.",
       repository: none,
       months: 1,
-      from: "2026-07-30",
-      to: "2026-08-30",
+      from: "2026-07-31",
+      to: "2026-08-31",
       totals: (
         commits: 265,
         prs_merged: 11,
         prs_opened: 13,
-        issues: 68,
+        issues: 54,
       ),
       contributors: (
       (
@@ -476,7 +476,7 @@
         commits: 120,
         prs_merged: 0,
         prs_opened: 0,
-        issues: 50,
+        issues: 32,
       ),
       (
         login: "dofi4ka",
@@ -497,7 +497,7 @@
         commits: 19,
         prs_merged: 1,
         prs_opened: 1,
-        issues: 2,
+        issues: 3,
       ),
       (
         login: "SerafimSoldatov",
@@ -525,7 +525,7 @@
         commits: 2,
         prs_merged: 0,
         prs_opened: 1,
-        issues: 0,
+        issues: 3,
       ),
       (
         login: "upconett",
