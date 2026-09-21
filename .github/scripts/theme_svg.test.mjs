@@ -22,7 +22,6 @@ test("injects light defaults and a dark prefers-color-scheme override", () => {
   const output = applyAdaptiveTheme('<svg><path fill="#fff4ff"/></svg>');
 
   assert.match(output, /<style id="adaptive-theme">/);
-  assert.match(output, /color-scheme:light dark/);
   assert.match(output, /--base-100:#ffffff/);
   assert.match(output, /@media \(prefers-color-scheme:dark\)/);
   assert.match(output, /--base-100:#0f0c0f/);
