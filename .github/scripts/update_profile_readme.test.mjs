@@ -37,16 +37,47 @@ const table = `### Overall contribution — Last month
 
 const updatedTable = table.replace("**3**", "**4**");
 
-test("adopts the monthly SVG embed on first run", () => {
+test("adopts the monthly SVG embed and removes the details wrapper", () => {
   const updated = updateProfileReadme(baseReadme, table);
 
   assert.match(updated, new RegExp(summarySvg.replaceAll("/", "\\/")));
-  assert.match(updated, /<details>\n<summary>View last month/);
+  assert.equal(updated.includes("<details>"), false);
+  assert.equal(updated.includes("<summary>"), false);
+  assert.equal(updated.includes("</details>"), false);
   assert.match(updated, new RegExp(START_MARKER));
   assert.match(updated, new RegExp(END_MARKER));
+  assert.match(updated, /### Overall contribution — Last month/);
   assert.match(updated, /<a href="https:\/\/github\.com\/alice">alice<\/a>/);
   assert.equal(updated.includes(monthlySvg), false);
-  assert.match(updated, /<\/details>\n$/);
+});
+
+test("unwraps an existing details-wrapped marked section with nested commit details", () => {
+  const wrapped = `## Contributing
+
+${summarySvg}
+
+<details>
+<summary>View last month’s contributor leaderboard</summary>
+
+${START_MARKER}
+### Overall contribution — Last month
+
+| Rank | Contributor | Commits | PRs | Issues |
+|---:|---|---:|---:|---:|
+| 1 | alice | <details><summary><strong>3</strong></summary><a href="https://github.com/one-zero-eight/website/commits?author=alice">website — 3 commits</a></details> | 1 / 1 | 0 |
+${END_MARKER}
+
+</details>
+`;
+
+  const updated = updateProfileReadme(wrapped, table);
+  assert.equal(updated.includes("View last month"), false);
+  assert.equal(
+    (updated.match(/<details>/g) ?? []).length,
+    0,
+  );
+  assert.match(updated, /### Overall contribution — Last month/);
+  assert.match(updated, new RegExp(summarySvg.replaceAll("/", "\\/")));
 });
 
 test("replaces marked content on subsequent runs and is idempotent", () => {
@@ -57,6 +88,7 @@ test("replaces marked content on subsequent runs and is idempotent", () => {
   assert.equal(second.includes("| **4** |"), true);
   assert.equal(second.includes("| **3** |"), false);
   assert.equal(third, second);
+  assert.equal(second.includes("<details>"), false);
   assert.equal((second.match(new RegExp(START_MARKER, "g")) ?? []).length, 1);
   assert.equal((second.match(new RegExp(END_MARKER, "g")) ?? []).length, 1);
 });
@@ -104,5 +136,5 @@ test("preserves surrounding content outside the replacement span", () => {
   const updated = updateProfileReadme(baseReadme, table);
   assert.match(updated, /^## Contributing\n\nIntro text\.\n\n/);
   assert.match(updated, new RegExp(summarySvg.replaceAll("/", "\\/")));
-  assert.match(updated, /<summary>View last month’s contributor leaderboard<\/summary>/);
+  assert.equal(updated.includes("View last month"), false);
 });
