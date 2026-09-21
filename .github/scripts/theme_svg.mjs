@@ -4,21 +4,21 @@ import { pathToFileURL } from "node:url";
 
 export const adaptiveTheme = {
   "base-100": { light: "#ffffff", dark: "#0f0c0f" },
-  "base-150": { light: "#ffffff", dark: "#161216" },
-  "base-200": { light: "#f6f8fa", dark: "#19141a" },
-  "base-300": { light: "#d0d7de", dark: "#261f27" },
-  "base-content": { light: "#1f2328", dark: "#fff4ff" },
-  primary: { light: "#8250df", dark: "#9747ff" },
-  "primary-content": { light: "#1f2328", dark: "#edf1fe" },
-  "brand-gradient-start": { light: "#8250df", dark: "#9a2eff" },
-  "brand-gradient-end": { light: "#bf3989", dark: "#d123a2" },
-  "muted-content": { light: "#656d76", dark: "#a89fa8" },
-  "faint-content": { light: "#6e7781", dark: "#706971" },
-  "metric-content": { light: "#656d76", dark: "#b8bac5" },
-  "rank-fill": { light: "#f3e8ff", dark: "#3a2157" },
-  "rank-stroke": { light: "#8250df", dark: "#6a34ad" },
-  "badge-fill": { light: "#f3e8ff", dark: "#2b1b3a" },
-  "badge-stroke": { light: "#8250df", dark: "#45266a" },
+  "base-150": { light: "#f4eff5", dark: "#161216" },
+  "base-200": { light: "#faf7fb", dark: "#19141a" },
+  "base-300": { light: "#ded7e0", dark: "#261f27" },
+  "base-content": { light: "#211c21", dark: "#fff4ff" },
+  primary: { light: "#7c3aed", dark: "#9747ff" },
+  "primary-content": { light: "#2f2833", dark: "#edf1fe" },
+  "brand-gradient-start": { light: "#7c3aed", dark: "#9a2eff" },
+  "brand-gradient-end": { light: "#b4237b", dark: "#d123a2" },
+  "muted-content": { light: "#6f6870", dark: "#a89fa8" },
+  "faint-content": { light: "#8a828b", dark: "#706971" },
+  "metric-content": { light: "#5f5964", dark: "#b8bac5" },
+  "rank-fill": { light: "#efe6f9", dark: "#3a2157" },
+  "rank-stroke": { light: "#8b58c9", dark: "#6a34ad" },
+  "badge-fill": { light: "#f3eafc", dark: "#2b1b3a" },
+  "badge-stroke": { light: "#b994df", dark: "#45266a" },
 };
 
 function cssVariables(mode) {
@@ -27,7 +27,7 @@ function cssVariables(mode) {
     .join("");
 }
 
-const adaptiveStyle = `<style id="adaptive-theme">:root{color-scheme:light dark;${cssVariables("light")}}@media (prefers-color-scheme:dark){:root{${cssVariables("dark")}}}</style>`;
+const adaptiveStyle = `<style id="adaptive-theme">:root{${cssVariables("light")}}@media (prefers-color-scheme:dark){:root{${cssVariables("dark")}}}</style>`;
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
