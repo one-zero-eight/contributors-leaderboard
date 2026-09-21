@@ -4,7 +4,7 @@
   months: 6,
   from: "2026-03-21",
   to: "2026-09-21",
-  generated_at: "2026-09-21T16:14:49.164Z",
+  generated_at: "2026-09-21T20:33:55.166Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -15,15 +15,15 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 1109,
+        commits: 1125,
         prs_merged: 89,
-        prs_opened: 98,
-        issues: 335,
+        prs_opened: 99,
+        issues: 337,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 369,
+        commits: 379,
         prs_merged: 15,
         prs_opened: 15,
         issues: 67,
@@ -32,7 +32,7 @@
         login: "ArtemSBulgakov",
         commits: 190,
         prs_merged: 0,
-        prs_opened: 1,
+        prs_opened: 2,
         issues: 13,
       ),
       (
@@ -44,7 +44,7 @@
       ),
       (
         login: "keamka",
-        commits: 69,
+        commits: 74,
         prs_merged: 7,
         prs_opened: 10,
         issues: 140,
@@ -68,7 +68,7 @@
         commits: 40,
         prs_merged: 0,
         prs_opened: 0,
-        issues: 17,
+        issues: 18,
       ),
       (
         login: "PoweredDeveloper",
@@ -86,10 +86,10 @@
       ),
       (
         login: "mainStorne",
-        commits: 19,
+        commits: 20,
         prs_merged: 8,
         prs_opened: 9,
-        issues: 4,
+        issues: 5,
       ),
       (
         login: "Aydar-art",
@@ -343,10 +343,10 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 431,
+        commits: 432,
         prs_merged: 18,
-        prs_opened: 24,
-        issues: 113,
+        prs_opened: 25,
+        issues: 115,
       ),
       contributors: (
       (
@@ -360,7 +360,7 @@
         login: "ArtemSBulgakov",
         commits: 85,
         prs_merged: 0,
-        prs_opened: 1,
+        prs_opened: 2,
         issues: 5,
       ),
       (
@@ -400,10 +400,10 @@
       ),
       (
         login: "mainStorne",
-        commits: 14,
+        commits: 15,
         prs_merged: 2,
         prs_opened: 2,
-        issues: 0,
+        issues: 1,
       ),
       (
         login: "projacktor",
@@ -417,7 +417,7 @@
         commits: 6,
         prs_merged: 0,
         prs_opened: 0,
-        issues: 9,
+        issues: 10,
       ),
       (
         login: "poeticlama",
@@ -493,31 +493,31 @@
       from: "2026-08-21",
       to: "2026-09-21",
       totals: (
-        commits: 148,
+        commits: 164,
         prs_merged: 22,
-        prs_opened: 22,
-        issues: 24,
+        prs_opened: 23,
+        issues: 26,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 51,
+        commits: 61,
         prs_merged: 4,
         prs_opened: 4,
         issues: 5,
       ),
       (
         login: "mainStorne",
-        commits: 19,
+        commits: 20,
         prs_merged: 8,
         prs_opened: 9,
-        issues: 4,
+        issues: 5,
       ),
       (
         login: "ArtemSBulgakov",
         commits: 17,
         prs_merged: 0,
-        prs_opened: 0,
+        prs_opened: 1,
         issues: 0,
       ),
       (
@@ -529,7 +529,7 @@
       ),
       (
         login: "keamka",
-        commits: 9,
+        commits: 14,
         prs_merged: 1,
         prs_opened: 1,
         issues: 2,
@@ -539,7 +539,7 @@
         commits: 8,
         prs_merged: 0,
         prs_opened: 0,
-        issues: 8,
+        issues: 9,
       ),
       (
         login: "GrigsyChudin",
