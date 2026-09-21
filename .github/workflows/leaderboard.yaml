@@ -27,7 +27,7 @@ jobs:
           typst-version: 0.15.1
 
       - name: Test data generation
-        run: node --test .github/scripts/generate_leaderboard.test.mjs
+        run: node --test .github/scripts/generate_leaderboard.test.mjs .github/scripts/theme_svg.test.mjs
 
       - name: Generate Typst data
         env:
@@ -61,6 +61,16 @@ jobs:
             --input view=website \
             --font-path typst/assets/fonts \
             --ignore-system-fonts
+
+      - name: Apply adaptive SVG theme
+        run: |
+          node .github/scripts/theme_svg.mjs \
+            leaderboard.svg \
+            leaderboard-overall.svg \
+            leaderboard-overall-summary.svg \
+            leaderboard-overall-month.svg \
+            leaderboard-monorepo.svg \
+            leaderboard-website.svg
 
       - name: Commit and push if changed
         run: |
