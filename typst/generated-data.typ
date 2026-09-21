@@ -4,7 +4,7 @@
   months: 6,
   from: "2026-03-21",
   to: "2026-09-21",
-  generated_at: "2026-09-21T15:16:54.134Z",
+  generated_at: "2026-09-21T15:24:11.937Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -15,17 +15,17 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 1117,
-        prs_merged: 86,
-        prs_opened: 95,
+        commits: 1109,
+        prs_merged: 87,
+        prs_opened: 96,
         issues: 334,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 372,
-        prs_merged: 12,
-        prs_opened: 12,
+        commits: 369,
+        prs_merged: 13,
+        prs_opened: 13,
         issues: 66,
       ),
       (
@@ -44,7 +44,7 @@
       ),
       (
         login: "keamka",
-        commits: 74,
+        commits: 69,
         prs_merged: 7,
         prs_opened: 10,
         issues: 140,
@@ -493,17 +493,17 @@
       from: "2026-08-21",
       to: "2026-09-21",
       totals: (
-        commits: 156,
-        prs_merged: 19,
-        prs_opened: 19,
+        commits: 148,
+        prs_merged: 20,
+        prs_opened: 20,
         issues: 23,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 54,
-        prs_merged: 1,
-        prs_opened: 1,
+        commits: 51,
+        prs_merged: 2,
+        prs_opened: 2,
         issues: 4,
       ),
       (
@@ -529,7 +529,7 @@
       ),
       (
         login: "keamka",
-        commits: 14,
+        commits: 9,
         prs_merged: 1,
         prs_opened: 1,
         issues: 2,
