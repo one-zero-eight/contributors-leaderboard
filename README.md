@@ -3,14 +3,17 @@
 The repository publishes website-styled SVG leaderboards for contributions to
 the [`one-zero-eight`](https://github.com/one-zero-eight) GitHub organization.
 The combined `leaderboard.svg` is accompanied by standalone Overall, Monorepo,
-and Website views, a compact Overall summary, and a one-month Overall view.
+and Website views, a compact Overall summary, a one-month Overall SVG, and a
+Markdown monthly table published to the organization profile README.
 
 ## Structure
 
 - `leaderboard.config.mjs` defines the organization, six-month and one-month
   rolling periods, account exclusions, and leaderboard sections.
 - `.github/scripts/generate_leaderboard.mjs` collects GitHub activity and writes
-  `typst/generated-data.typ`.
+  `typst/generated-data.typ` plus `leaderboard-overall-month.md`.
+- `.github/scripts/update_profile_readme.mjs` replaces the monthly section in
+  `one-zero-eight/.github` `profile/README.md`.
 - `typst/leaderboard.typ` renders the generated records using the shared website
   colors and Rubik font.
 
@@ -43,8 +46,13 @@ six-month board. Use `summary` for the compact Overall statistics card and
 with:
 
 ```sh
-node --test .github/scripts/generate_leaderboard.test.mjs
+node --test \
+  .github/scripts/generate_leaderboard.test.mjs \
+  .github/scripts/theme_svg.test.mjs \
+  .github/scripts/update_profile_readme.test.mjs
 ```
 
-The workflow refreshes all six SVGs every Monday and commits changes together
-with the generated Typst data snapshot.
+The workflow refreshes all six SVGs and the monthly Markdown every Monday,
+commits them here, and publishes the Markdown table into the organization
+profile README. Publishing requires an organization `GH_PAT` secret with
+Contents read/write access to `one-zero-eight/.github`.

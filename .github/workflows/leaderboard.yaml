@@ -6,6 +6,10 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
+concurrency:
+  group: generate-leaderboard
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -15,6 +19,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Require GH_PAT for profile publishing
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          if [ -z "$GH_PAT" ]; then
+            echo "GH_PAT secret is required to publish the organization profile README"
+            exit 1
+          fi
+
+      - name: Checkout organization profile
+        uses: actions/checkout@v4
+        with:
+          repository: one-zero-eight/.github
+          ref: main
+          path: profile-repo
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -27,12 +48,16 @@ jobs:
           typst-version: 0.15.1
 
       - name: Test data generation
-        run: node --test .github/scripts/generate_leaderboard.test.mjs .github/scripts/theme_svg.test.mjs
+        run: |
+          node --test \
+            .github/scripts/generate_leaderboard.test.mjs \
+            .github/scripts/theme_svg.test.mjs \
+            .github/scripts/update_profile_readme.test.mjs
 
-      - name: Generate Typst data
+      - name: Generate Typst data and Markdown
         env:
-          # Optional: create org secret GH_PAT for organization-wide private repo access.
-          GH_TOKEN: ${{ secrets.GH_PAT || github.token }}
+          # Required: org secret GH_PAT for private repos and profile publishing.
+          GH_TOKEN: ${{ secrets.GH_PAT }}
         run: node .github/scripts/generate_leaderboard.mjs
 
       - name: Compile leaderboards
@@ -72,7 +97,13 @@ jobs:
             leaderboard-monorepo.svg \
             leaderboard-website.svg
 
-      - name: Commit and push if changed
+      - name: Update organization profile README
+        run: |
+          node .github/scripts/update_profile_readme.mjs \
+            profile-repo/profile/README.md \
+            leaderboard-overall-month.md
+
+      - name: Commit and push leaderboard artifacts
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -83,13 +114,29 @@ jobs:
             leaderboard-overall.svg \
             leaderboard-overall-summary.svg \
             leaderboard-overall-month.svg \
+            leaderboard-overall-month.md \
             leaderboard-monorepo.svg \
             leaderboard-website.svg
 
           if git diff --cached --quiet; then
-            echo "No changes"
+            echo "No leaderboard repository changes"
+          else
+            git commit -m "chore: update leaderboard"
+            git push
+          fi
+
+      - name: Commit and push profile README
+        working-directory: profile-repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add profile/README.md
+
+          if git diff --cached --quiet; then
+            echo "No profile README changes"
             exit 0
           fi
 
-          git commit -m "chore: update leaderboard"
+          git commit -m "chore: update monthly contributors leaderboard"
           git push

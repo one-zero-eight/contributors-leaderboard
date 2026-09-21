@@ -7,6 +7,7 @@ import { leaderboardConfig } from "../../leaderboard.config.mjs";
 const API = "https://api.github.com";
 const GQL = "https://api.github.com/graphql";
 const DEFAULT_OUTPUT = "typst/generated-data.typ";
+const DEFAULT_MARKDOWN_OUTPUT = "leaderboard-overall-month.md";
 
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -123,6 +124,87 @@ function sumContributors(contributors) {
     }),
     { commits: 0, prsMerged: 0, prsOpened: 0, issues: 0 },
   );
+}
+
+export function buildRepositoryBreakdowns(repositoryCommits) {
+  const byLogin = new Map();
+  for (const [repository, commits] of repositoryCommits.entries()) {
+    for (const [login, count] of commits.entries()) {
+      if (count <= 0) continue;
+      const existing = byLogin.get(login) ?? [];
+      existing.push({ name: repository, commits: count });
+      byLogin.set(login, existing);
+    }
+  }
+
+  for (const [login, repositories] of byLogin.entries()) {
+    repositories.sort(
+      (left, right) =>
+        right.commits - left.commits ||
+        left.name.localeCompare(right.name, "en", { sensitivity: "base" }),
+    );
+    byLogin.set(login, repositories);
+  }
+  return byLogin;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function periodHeading(months) {
+  return months === 1 ? "Last month" : `Last ${months} months`;
+}
+
+function renderCommitsCell(organization, login, commits, repositories = []) {
+  if (repositories.length <= 1) {
+    return `**${commits}**`;
+  }
+
+  const links = repositories
+    .map((repository) => {
+      const href = `https://github.com/${encodeURIComponent(organization)}/${encodeURIComponent(repository.name)}/commits?author=${encodeURIComponent(login)}`;
+      const label = `${escapeHtml(repository.name)} — ${repository.commits} commits`;
+      return `<a href="${href}">${label}</a>`;
+    })
+    .join("<br>");
+
+  return `<details><summary><strong>${commits}</strong></summary>${links}</details>`;
+}
+
+export function serializeMonthlyMarkdown(organization, section) {
+  const contributors = section.contributors ?? [];
+  const totals = sumContributors(contributors);
+  const months = section.months ?? 1;
+  const heading = `### ${section.title} — ${periodHeading(months)}`;
+  const summary = `**${totals.commits} commits · ${totals.prsMerged} PRs merged · ${totals.prsOpened} PRs opened · ${totals.issues} issues opened · ${contributors.length} contributors**`;
+
+  const rows = contributors.map((contributor, index) => {
+    const login = escapeHtml(contributor.login);
+    const avatar = `<img src="https://github.com/${encodeURIComponent(contributor.login)}.png?size=32" width="24" height="24" align="absmiddle">`;
+    const commitsCell = renderCommitsCell(
+      organization,
+      contributor.login,
+      contributor.commits,
+      contributor.repositories ?? [],
+    );
+    return `| ${index + 1} | ${avatar} @${login} | ${commitsCell} | ${contributor.prsMerged} | ${contributor.prsOpened} | ${contributor.issues} |`;
+  });
+
+  return [
+    heading,
+    "",
+    summary,
+    "",
+    "| Rank | Contributor | Commits | PRs merged | PRs opened | Issues |",
+    "|---:|---|---:|---:|---:|---:|",
+    ...rows,
+    "",
+  ].join("\n");
 }
 
 export function serializeTypstData(data) {
@@ -443,11 +525,18 @@ export async function collectLeaderboardData(config, token, now = new Date()) {
     monthlyFrom,
     to,
   );
+  const monthlyBreakdowns = buildRepositoryBreakdowns(monthlyRepositoryCommits);
+  const monthlyContributorsWithRepos = monthlyContributors.map(
+    (contributor) => ({
+      ...contributor,
+      repositories: monthlyBreakdowns.get(contributor.login) ?? [],
+    }),
+  );
   leaderboards.push({
     ...config.monthlyOverall,
     from: monthlyFrom,
     to,
-    contributors: monthlyContributors,
+    contributors: monthlyContributorsWithRepos,
   });
 
   return {
@@ -460,6 +549,18 @@ export async function collectLeaderboardData(config, token, now = new Date()) {
   };
 }
 
+export function monthlySectionFromData(data) {
+  const section = data.leaderboards.find(
+    (entry) => entry.id === leaderboardConfig.monthlyOverall.id,
+  );
+  if (!section) {
+    throw new Error(
+      `Missing monthly leaderboard section: ${leaderboardConfig.monthlyOverall.id}`,
+    );
+  }
+  return section;
+}
+
 export async function main() {
   const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
   if (!token) throw new Error("Missing GH_TOKEN or GITHUB_TOKEN");
@@ -469,6 +570,18 @@ export async function main() {
   await fs.mkdir(path.dirname(output), { recursive: true });
   await fs.writeFile(output, serializeTypstData(data), "utf8");
   console.log(`Wrote ${output}`);
+
+  const markdownOutput =
+    process.env.LEADERBOARD_MARKDOWN_OUTPUT ?? DEFAULT_MARKDOWN_OUTPUT;
+  const monthlyMarkdown = serializeMonthlyMarkdown(
+    data.organization,
+    monthlySectionFromData(data),
+  );
+  await fs.mkdir(path.dirname(path.resolve(markdownOutput)), {
+    recursive: true,
+  });
+  await fs.writeFile(markdownOutput, monthlyMarkdown, "utf8");
+  console.log(`Wrote ${markdownOutput}`);
 }
 
 const scriptPath = process.argv[1] ? pathToFileURL(process.argv[1]).href : "";
