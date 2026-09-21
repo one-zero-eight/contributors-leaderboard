@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { leaderboardConfig } from "../../leaderboard.config.mjs";
 import {
   monthsBackDate,
   rankContributors,
@@ -61,9 +62,10 @@ test("validates the maintained leaderboard config", () => {
 });
 
 test("excludes configured automation accounts case-insensitively", () => {
-  const exclusions = validConfig.excludedAccounts;
+  const exclusions = leaderboardConfig.excludedAccounts;
   assert.equal(shouldExcludeLogin("dependabot[bot]", exclusions), true);
   assert.equal(shouldExcludeLogin("CI-BOT", exclusions), true);
+  assert.equal(shouldExcludeLogin("Claude", exclusions), true);
   assert.equal(shouldExcludeLogin("human-contributor", exclusions), false);
 });
 

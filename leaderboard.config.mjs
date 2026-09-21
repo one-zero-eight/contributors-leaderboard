@@ -10,7 +10,7 @@ export const leaderboardConfig = {
   },
   excludedAccounts: {
     suffixes: ["[bot]"],
-    logins: ["ci-bot", "cursoragent"],
+    logins: ["ci-bot", "cursoragent", "claude"],
   },
   leaderboards: [
     {

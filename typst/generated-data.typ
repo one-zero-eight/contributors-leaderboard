@@ -15,7 +15,7 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 1090,
+        commits: 1089,
         prs_merged: 84,
         prs_opened: 94,
         issues: 334,
@@ -187,13 +187,6 @@
         commits: 1,
         prs_merged: 1,
         prs_opened: 1,
-        issues: 0,
-      ),
-      (
-        login: "claude",
-        commits: 1,
-        prs_merged: 0,
-        prs_opened: 0,
         issues: 0,
       ),
       (
@@ -493,7 +486,7 @@
       from: "2026-08-21",
       to: "2026-09-21",
       totals: (
-        commits: 129,
+        commits: 128,
         prs_merged: 17,
         prs_opened: 18,
         issues: 23,
@@ -592,13 +585,6 @@
       ),
       (
         login: "belyakova-anna",
-        commits: 1,
-        prs_merged: 0,
-        prs_opened: 0,
-        issues: 0,
-      ),
-      (
-        login: "claude",
         commits: 1,
         prs_merged: 0,
         prs_opened: 0,
