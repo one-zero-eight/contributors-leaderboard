@@ -4,9 +4,10 @@ import test from "node:test";
 import {
   adaptiveTheme,
   applyAdaptiveTheme,
+  sourcePalette,
 } from "./theme_svg.mjs";
 
-test("replaces Typst dark palette colors with CSS variables", () => {
+test("replaces Typst source palette colors with CSS variables", () => {
   const input =
     '<svg viewBox="0 0 10 10"><path fill="#0f0c0f"/><path fill="#19141A" stroke="#261f27"/><path fill="#9747ff"/></svg>';
 
@@ -16,6 +17,8 @@ test("replaces Typst dark palette colors with CSS variables", () => {
   assert.match(output, /fill="var\(--base-200\)"/);
   assert.match(output, /stroke="var\(--base-300\)"/);
   assert.match(output, /fill="var\(--primary\)"/);
+  assert.equal(sourcePalette["base-100"], "#0f0c0f");
+  assert.equal(adaptiveTheme["base-100"].dark, "transparent");
 });
 
 test("injects light defaults and a dark prefers-color-scheme override", () => {
