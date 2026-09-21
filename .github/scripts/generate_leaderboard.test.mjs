@@ -175,7 +175,7 @@ test("builds deterministic per-repository commit breakdowns", () => {
 
 test("serializes monthly Markdown for every contributor", () => {
   const markdown = serializeMonthlyMarkdown("one-zero-eight", {
-    title: "Overall contribution",
+    title: "Contribution",
     months: 1,
     contributors: [
       {
@@ -200,7 +200,7 @@ test("serializes monthly Markdown for every contributor", () => {
     ],
   });
 
-  assert.match(markdown, /^### Overall contribution — Last month\n/);
+  assert.match(markdown, /^### Contribution — last month\n/);
   assert.match(
     markdown,
     /\*\*19 commits · 2 PRs merged · 3 PRs opened · 1 issues opened · 2 contributors\*\*/,
@@ -226,7 +226,7 @@ test("serializes monthly Markdown for every contributor", () => {
 
 test("serializes empty monthly Markdown and escapes HTML", () => {
   const empty = serializeMonthlyMarkdown("one-zero-eight", {
-    title: "Overall contribution",
+    title: "Contribution",
     months: 1,
     contributors: [],
   });
@@ -237,7 +237,7 @@ test("serializes empty monthly Markdown and escapes HTML", () => {
   assert.equal(empty.includes("| 1 |"), false);
 
   const escaped = serializeMonthlyMarkdown("one-zero-eight", {
-    title: "Overall contribution",
+    title: "Contribution",
     months: 1,
     contributors: [
       {

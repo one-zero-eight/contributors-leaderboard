@@ -26,7 +26,7 @@ ${monthlySvg}
 </details>
 `;
 
-const table = `### Overall contribution — Last month
+const table = `### Contribution — last month
 
 **3 commits · 1 PRs merged · 1 PRs opened · 0 issues opened · 1 contributors**
 
@@ -46,7 +46,7 @@ test("adopts the monthly SVG embed and removes the details wrapper", () => {
   assert.equal(updated.includes("</details>"), false);
   assert.match(updated, new RegExp(START_MARKER));
   assert.match(updated, new RegExp(END_MARKER));
-  assert.match(updated, /### Overall contribution — Last month/);
+  assert.match(updated, /### Contribution — last month/);
   assert.match(updated, /<a href="https:\/\/github\.com\/alice">alice<\/a>/);
   assert.equal(updated.includes(monthlySvg), false);
 });
@@ -60,7 +60,7 @@ ${summarySvg}
 <summary>View last month’s contributor leaderboard</summary>
 
 ${START_MARKER}
-### Overall contribution — Last month
+### Contribution — last month
 
 | Rank | Contributor | Commits | PRs | Issues |
 |---:|---|---:|---:|---:|
@@ -76,7 +76,7 @@ ${END_MARKER}
     (updated.match(/<details>/g) ?? []).length,
     0,
   );
-  assert.match(updated, /### Overall contribution — Last month/);
+  assert.match(updated, /### Contribution — last month/);
   assert.match(updated, new RegExp(summarySvg.replaceAll("/", "\\/")));
 });
 

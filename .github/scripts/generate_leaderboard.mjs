@@ -157,7 +157,7 @@ function escapeHtml(value) {
 }
 
 function periodHeading(months) {
-  return months === 1 ? "Last month" : `Last ${months} months`;
+  return months === 1 ? "last month" : `last ${months} months`;
 }
 
 function renderCommitsCell(organization, login, commits, repositories = []) {

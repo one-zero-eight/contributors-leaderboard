@@ -3,7 +3,7 @@ export const leaderboardConfig = {
   months: 6,
   monthlyOverall: {
     id: "overall_month",
-    title: "Overall contribution",
+    title: "Contribution",
     description:
       "Summarized contributions across all one-zero-eight repositories.",
     months: 1,

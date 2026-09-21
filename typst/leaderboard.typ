@@ -41,9 +41,9 @@
 ]
 
 #let period-label(months) = if months == 1 {
-  [Last month]
+  [last month]
 } else {
-  [Last #months months]
+  [last #months months]
 }
 
 #let rank-badge(rank) = {
