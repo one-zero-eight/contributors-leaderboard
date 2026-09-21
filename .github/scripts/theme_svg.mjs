@@ -3,7 +3,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 export const adaptiveTheme = {
-  "base-100": { light: "#ffffff", dark: "#0f0c0f" },
+  "base-100": { light: "transparent", dark: "transparent" },
   "base-150": { light: "#f4eff5", dark: "#161216" },
   "base-200": { light: "#faf7fb", dark: "#19141a" },
   "base-300": { light: "#ded7e0", dark: "#261f27" },
