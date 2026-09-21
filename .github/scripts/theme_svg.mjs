@@ -2,6 +2,25 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
+export const sourcePalette = {
+  "base-100": "#0f0c0f",
+  "base-150": "#161216",
+  "base-200": "#19141a",
+  "base-300": "#261f27",
+  "base-content": "#fff4ff",
+  primary: "#9747ff",
+  "primary-content": "#edf1fe",
+  "brand-gradient-start": "#9a2eff",
+  "brand-gradient-end": "#d123a2",
+  "muted-content": "#a89fa8",
+  "faint-content": "#706971",
+  "metric-content": "#b8bac5",
+  "rank-fill": "#3a2157",
+  "rank-stroke": "#6a34ad",
+  "badge-fill": "#2b1b3a",
+  "badge-stroke": "#45266a",
+};
+
 export const adaptiveTheme = {
   "base-100": { light: "transparent", dark: "transparent" },
   "base-150": { light: "#f4eff5", dark: "#161216" },
@@ -37,9 +56,9 @@ export function applyAdaptiveTheme(svg) {
   if (svg.includes('id="adaptive-theme"')) return svg;
 
   let themedSvg = svg;
-  for (const [name, colors] of Object.entries(adaptiveTheme)) {
+  for (const [name, sourceColor] of Object.entries(sourcePalette)) {
     themedSvg = themedSvg.replace(
-      new RegExp(escapeRegExp(colors.dark), "gi"),
+      new RegExp(escapeRegExp(sourceColor), "gi"),
       `var(--${name})`,
     );
   }
