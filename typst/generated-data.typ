@@ -4,7 +4,7 @@
   months: 6,
   from: "2026-03-21",
   to: "2026-09-21",
-  generated_at: "2026-09-21T15:24:11.937Z",
+  generated_at: "2026-09-21T16:14:49.164Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -16,17 +16,17 @@
       to: "2026-09-21",
       totals: (
         commits: 1109,
-        prs_merged: 87,
-        prs_opened: 96,
-        issues: 334,
+        prs_merged: 89,
+        prs_opened: 98,
+        issues: 335,
       ),
       contributors: (
       (
         login: "dantetemplar",
         commits: 369,
-        prs_merged: 13,
-        prs_opened: 13,
-        issues: 66,
+        prs_merged: 15,
+        prs_opened: 15,
+        issues: 67,
       ),
       (
         login: "ArtemSBulgakov",
@@ -494,17 +494,17 @@
       to: "2026-09-21",
       totals: (
         commits: 148,
-        prs_merged: 20,
-        prs_opened: 20,
-        issues: 23,
+        prs_merged: 22,
+        prs_opened: 22,
+        issues: 24,
       ),
       contributors: (
       (
         login: "dantetemplar",
         commits: 51,
-        prs_merged: 2,
-        prs_opened: 2,
-        issues: 4,
+        prs_merged: 4,
+        prs_opened: 4,
+        issues: 5,
       ),
       (
         login: "mainStorne",
