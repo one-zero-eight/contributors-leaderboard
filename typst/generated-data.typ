@@ -4,7 +4,7 @@
   months: 6,
   from: "2026-03-21",
   to: "2026-09-21",
-  generated_at: "2026-09-21T20:33:55.166Z",
+  generated_at: "2026-09-21T20:49:54.120Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -15,7 +15,7 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 1125,
+        commits: 1008,
         prs_merged: 89,
         prs_opened: 99,
         issues: 337,
@@ -23,17 +23,10 @@
       contributors: (
       (
         login: "dantetemplar",
-        commits: 379,
+        commits: 346,
         prs_merged: 15,
         prs_opened: 15,
         issues: 67,
-      ),
-      (
-        login: "ArtemSBulgakov",
-        commits: 190,
-        prs_merged: 0,
-        prs_opened: 2,
-        issues: 13,
       ),
       (
         login: "dofi4ka",
@@ -43,18 +36,18 @@
         issues: 25,
       ),
       (
+        login: "ArtemSBulgakov",
+        commits: 166,
+        prs_merged: 0,
+        prs_opened: 2,
+        issues: 13,
+      ),
+      (
         login: "keamka",
-        commits: 74,
+        commits: 52,
         prs_merged: 7,
         prs_opened: 10,
         issues: 140,
-      ),
-      (
-        login: "projacktor",
-        commits: 51,
-        prs_merged: 2,
-        prs_opened: 3,
-        issues: 1,
       ),
       (
         login: "danillatency",
@@ -111,6 +104,13 @@
         prs_merged: 0,
         prs_opened: 0,
         issues: 0,
+      ),
+      (
+        login: "projacktor",
+        commits: 13,
+        prs_merged: 2,
+        prs_opened: 3,
+        issues: 1,
       ),
       (
         login: "upconett",
@@ -493,7 +493,7 @@
       from: "2026-08-21",
       to: "2026-09-21",
       totals: (
-        commits: 164,
+        commits: 149,
         prs_merged: 22,
         prs_opened: 23,
         issues: 26,
@@ -501,7 +501,7 @@
       contributors: (
       (
         login: "dantetemplar",
-        commits: 61,
+        commits: 51,
         prs_merged: 4,
         prs_opened: 4,
         issues: 5,
@@ -529,7 +529,7 @@
       ),
       (
         login: "keamka",
-        commits: 14,
+        commits: 9,
         prs_merged: 1,
         prs_opened: 1,
         issues: 2,
