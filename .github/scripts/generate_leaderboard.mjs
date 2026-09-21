@@ -161,7 +161,7 @@ function periodHeading(months) {
 }
 
 function renderCommitsCell(organization, login, commits, repositories = []) {
-  if (repositories.length <= 1) {
+  if (repositories.length === 0) {
     return `**${commits}**`;
   }
 
@@ -185,14 +185,16 @@ export function serializeMonthlyMarkdown(organization, section) {
 
   const rows = contributors.map((contributor, index) => {
     const login = escapeHtml(contributor.login);
+    const profileUrl = `https://github.com/${encodeURIComponent(contributor.login)}`;
     const avatar = `<img src="https://github.com/${encodeURIComponent(contributor.login)}.png?size=32" width="24" height="24" align="absmiddle">`;
+    const contributorCell = `<a href="${profileUrl}">${avatar}</a> <a href="${profileUrl}">${login}</a>`;
     const commitsCell = renderCommitsCell(
       organization,
       contributor.login,
       contributor.commits,
       contributor.repositories ?? [],
     );
-    return `| ${index + 1} | ${avatar} @${login} | ${commitsCell} | ${contributor.prsMerged} | ${contributor.prsOpened} | ${contributor.issues} |`;
+    return `| ${index + 1} | ${contributorCell} | ${commitsCell} | ${contributor.prsMerged} / ${contributor.prsOpened} | ${contributor.issues} |`;
   });
 
   return [
@@ -200,8 +202,8 @@ export function serializeMonthlyMarkdown(organization, section) {
     "",
     summary,
     "",
-    "| Rank | Contributor | Commits | PRs merged | PRs opened | Issues |",
-    "|---:|---|---:|---:|---:|---:|",
+    "| Rank | Contributor | Commits | PRs | Issues |",
+    "|---:|---|---:|---:|---:|",
     ...rows,
     "",
   ].join("\n");

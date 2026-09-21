@@ -207,17 +207,21 @@ test("serializes monthly Markdown for every contributor", () => {
   );
   assert.match(
     markdown,
-    /\| Rank \| Contributor \| Commits \| PRs merged \| PRs opened \| Issues \|/,
+    /\| Rank \| Contributor \| Commits \| PRs \| Issues \|/,
   );
   assert.match(
     markdown,
-    /<img src="https:\/\/github\.com\/alice\.png\?size=32" width="24" height="24" align="absmiddle"> @alice/,
+    /<a href="https:\/\/github\.com\/alice"><img src="https:\/\/github\.com\/alice\.png\?size=32" width="24" height="24" align="absmiddle"><\/a> <a href="https:\/\/github\.com\/alice">alice<\/a>/,
   );
   assert.match(
     markdown,
     /<details><summary><strong>14<\/strong><\/summary><a href="https:\/\/github\.com\/one-zero-eight\/monorepo\/commits\?author=alice">monorepo — 10 commits<\/a><br><a href="https:\/\/github\.com\/one-zero-eight\/website\/commits\?author=alice">website — 4 commits<\/a><\/details>/,
   );
-  assert.match(markdown, /\| 2 \| .* @bob \| \*\*5\*\* \| 0 \| 0 \| 0 \|/);
+  assert.match(
+    markdown,
+    /\| 2 \| <a href="https:\/\/github\.com\/bob"><img src="https:\/\/github\.com\/bob\.png\?size=32" width="24" height="24" align="absmiddle"><\/a> <a href="https:\/\/github\.com\/bob">bob<\/a> \| <details><summary><strong>5<\/strong><\/summary><a href="https:\/\/github\.com\/one-zero-eight\/website\/commits\?author=bob">website — 5 commits<\/a><\/details> \| 0 \/ 0 \| 0 \|/,
+  );
+  assert.match(markdown, /\| 1 \| .* \| .* \| 2 \/ 3 \| 1 \|/);
 });
 
 test("serializes empty monthly Markdown and escapes HTML", () => {
@@ -246,7 +250,7 @@ test("serializes empty monthly Markdown and escapes HTML", () => {
       },
     ],
   });
-  assert.match(escaped, /@a&lt;b&gt;&quot;c/);
+  assert.match(escaped, />a&lt;b&gt;&quot;c<\/a>/);
 });
 
 test("ignores repository metadata when serializing Typst data", () => {

@@ -30,9 +30,9 @@ const table = `### Overall contribution — Last month
 
 **3 commits · 1 PRs merged · 1 PRs opened · 0 issues opened · 1 contributors**
 
-| Rank | Contributor | Commits | PRs merged | PRs opened | Issues |
-|---:|---|---:|---:|---:|---:|
-| 1 | <img src="https://github.com/alice.png?size=32" width="24" height="24" align="absmiddle"> @alice | **3** | 1 | 1 | 0 |
+| Rank | Contributor | Commits | PRs | Issues |
+|---:|---|---:|---:|---:|
+| 1 | <a href="https://github.com/alice"><img src="https://github.com/alice.png?size=32" width="24" height="24" align="absmiddle"></a> <a href="https://github.com/alice">alice</a> | **3** | 1 / 1 | 0 |
 `;
 
 const updatedTable = table.replace("**3**", "**4**");
@@ -44,7 +44,7 @@ test("adopts the monthly SVG embed on first run", () => {
   assert.match(updated, /<details>\n<summary>View last month/);
   assert.match(updated, new RegExp(START_MARKER));
   assert.match(updated, new RegExp(END_MARKER));
-  assert.match(updated, /@alice/);
+  assert.match(updated, /<a href="https:\/\/github\.com\/alice">alice<\/a>/);
   assert.equal(updated.includes(monthlySvg), false);
   assert.match(updated, /<\/details>\n$/);
 });
