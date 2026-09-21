@@ -4,7 +4,7 @@
   months: 6,
   from: "2026-03-21",
   to: "2026-09-21",
-  generated_at: "2026-09-21T11:25:44.419Z",
+  generated_at: "2026-09-21T15:16:54.134Z",
   leaderboards: (
     overall: (
       id: "overall",
@@ -15,17 +15,17 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 1089,
-        prs_merged: 84,
-        prs_opened: 94,
+        commits: 1117,
+        prs_merged: 86,
+        prs_opened: 95,
         issues: 334,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 347,
-        prs_merged: 11,
-        prs_opened: 11,
+        commits: 372,
+        prs_merged: 12,
+        prs_opened: 12,
         issues: 66,
       ),
       (
@@ -44,7 +44,7 @@
       ),
       (
         login: "keamka",
-        commits: 73,
+        commits: 74,
         prs_merged: 7,
         prs_opened: 10,
         issues: 140,
@@ -86,8 +86,8 @@
       ),
       (
         login: "mainStorne",
-        commits: 18,
-        prs_merged: 7,
+        commits: 19,
+        prs_merged: 8,
         prs_opened: 9,
         issues: 4,
       ),
@@ -127,6 +127,13 @@
         issues: 0,
       ),
       (
+        login: "ARCshekin",
+        commits: 5,
+        prs_merged: 3,
+        prs_opened: 3,
+        issues: 1,
+      ),
+      (
         login: "poeticlama",
         commits: 5,
         prs_merged: 0,
@@ -139,13 +146,6 @@
         prs_merged: 5,
         prs_opened: 5,
         issues: 5,
-      ),
-      (
-        login: "ARCshekin",
-        commits: 4,
-        prs_merged: 3,
-        prs_opened: 3,
-        issues: 1,
       ),
       (
         login: "rTexty",
@@ -214,15 +214,15 @@
       from: "2026-03-21",
       to: "2026-09-21",
       totals: (
-        commits: 342,
-        prs_merged: 36,
-        prs_opened: 37,
+        commits: 366,
+        prs_merged: 37,
+        prs_opened: 38,
         issues: 148,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 174,
+        commits: 196,
         prs_merged: 1,
         prs_opened: 1,
         issues: 55,
@@ -291,18 +291,18 @@
         issues: 0,
       ),
       (
+        login: "ARCshekin",
+        commits: 2,
+        prs_merged: 1,
+        prs_opened: 1,
+        issues: 0,
+      ),
+      (
         login: "SerafimSoldatov",
         commits: 2,
         prs_merged: 2,
         prs_opened: 2,
         issues: 3,
-      ),
-      (
-        login: "ARCshekin",
-        commits: 1,
-        prs_merged: 1,
-        prs_opened: 1,
-        issues: 0,
       ),
       (
         login: "Aydar-art",
@@ -323,6 +323,13 @@
         commits: 1,
         prs_merged: 0,
         prs_opened: 0,
+        issues: 0,
+      ),
+      (
+        login: "mainStorne",
+        commits: 1,
+        prs_merged: 1,
+        prs_opened: 1,
         issues: 0,
       ),
       ),
@@ -486,23 +493,23 @@
       from: "2026-08-21",
       to: "2026-09-21",
       totals: (
-        commits: 128,
-        prs_merged: 17,
-        prs_opened: 18,
+        commits: 156,
+        prs_merged: 19,
+        prs_opened: 19,
         issues: 23,
       ),
       contributors: (
       (
         login: "dantetemplar",
-        commits: 29,
-        prs_merged: 0,
-        prs_opened: 0,
+        commits: 54,
+        prs_merged: 1,
+        prs_opened: 1,
         issues: 4,
       ),
       (
         login: "mainStorne",
-        commits: 18,
-        prs_merged: 7,
+        commits: 19,
+        prs_merged: 8,
         prs_opened: 9,
         issues: 4,
       ),
@@ -522,7 +529,7 @@
       ),
       (
         login: "keamka",
-        commits: 13,
+        commits: 14,
         prs_merged: 1,
         prs_opened: 1,
         issues: 2,
@@ -556,6 +563,13 @@
         issues: 0,
       ),
       (
+        login: "ARCshekin",
+        commits: 2,
+        prs_merged: 1,
+        prs_opened: 1,
+        issues: 0,
+      ),
+      (
         login: "SerafimSoldatov",
         commits: 2,
         prs_merged: 2,
@@ -574,13 +588,6 @@
         commits: 1,
         prs_merged: 0,
         prs_opened: 0,
-        issues: 0,
-      ),
-      (
-        login: "ARCshekin",
-        commits: 1,
-        prs_merged: 1,
-        prs_opened: 1,
         issues: 0,
       ),
       (
